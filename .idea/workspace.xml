@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87ee7061-78f2-48d9-97f9-71ce7fe0d338" name="Changes" comment="Added folder for authentication">
-      <change afterPath="$PROJECT_DIR$/src/auth/database.py" afterDir="false" />
+    <list default="true" id="87ee7061-78f2-48d9-97f9-71ce7fe0d338" name="Changes" comment="A file has been created database.py to interact with the database during authentication">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/auth/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/database.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,7 +113,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730141986166</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="A file has been created database.py to interact with the database during authentication">
+      <option name="closed" value="true" />
+      <created>1730142568895</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1730142568895</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -132,6 +141,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial" />
     <MESSAGE value="Added folder for authentication" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added folder for authentication" />
+    <MESSAGE value="A file has been created database.py to interact with the database during authentication" />
+    <option name="LAST_COMMIT_MESSAGE" value="A file has been created database.py to interact with the database during authentication" />
   </component>
 </project>
