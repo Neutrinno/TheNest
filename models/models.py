@@ -3,8 +3,8 @@ from sqlalchemy import MetaData, Table, Column, Integer, String, TIMESTAMP, Fore
 
 metadata = MetaData()
 
-student = Table(
-   "student",
+user = Table(
+   "user",
     metadata,
     Column("id", Integer, primary_key = True),
     Column("username", String, nullable=False),
@@ -53,7 +53,7 @@ assignment = Table(
     "assignment",
     metadata,
     Column("id", Integer, primary_key = True),
-    Column("student_id", Integer, ForeignKey(student.c.id)),
+    Column("student_id", Integer, ForeignKey(user.c.id)),
     Column("bad_id", Integer, ForeignKey(bad.c.id)),
     Column("application_status", String, nullable = False),
 )
@@ -63,7 +63,7 @@ application = Table(
     "application",
     metadata,
     Column("id", Integer, primary_key = True),
-    Column("student_id", Integer, ForeignKey(student.c.id)),
+    Column("student_id", Integer, ForeignKey(user.c.id)),
     Column("preferred_dormitory_id", Integer),
     Column("preferred_floor", Integer),
     Column("submission_date", TIMESTAMP, nullable = False),
@@ -74,7 +74,7 @@ status = Table(
     "status",
     metadata,
     Column("application_id", Integer, ForeignKey(application.c.id)),
-    Column("student_id", Integer, ForeignKey(student.c.id)),
+    Column("student_id", Integer, ForeignKey(user.c.id)),
     Column("status", String, nullable = False),
 )
 
@@ -83,5 +83,5 @@ roommate_preference = Table(
     metadata,
     Column("id", Integer, primary_key = True),
     Column("application_id", Integer, ForeignKey(application.c.id)),
-    Column("preferred_student_id", Integer, ForeignKey(student.c.id)),
+    Column("preferred_student_id", Integer, ForeignKey(user.c.id)),
 )

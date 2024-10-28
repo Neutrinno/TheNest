@@ -4,14 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87ee7061-78f2-48d9-97f9-71ce7fe0d338" name="Changes" comment="Change env.py and alembic.ini for use asyncpg">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/src/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migration/env.py" beforeDir="false" afterPath="$PROJECT_DIR$/migration/env.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/auth/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/auth/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/schemas.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    <list default="true" id="87ee7061-78f2-48d9-97f9-71ce7fe0d338" name="Changes" comment="Fixed the structure and errors related to it">
+      <change beforePath="$PROJECT_DIR$/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -176,7 +170,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730145008584</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Fixed the structure and errors related to it">
+      <option name="closed" value="true" />
+      <created>1730146318771</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1730146318771</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -203,6 +205,7 @@
     <MESSAGE value="Created schemas.py" />
     <MESSAGE value="Created routers in main.py" />
     <MESSAGE value="Change env.py and alembic.ini for use asyncpg" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change env.py and alembic.ini for use asyncpg" />
+    <MESSAGE value="Fixed the structure and errors related to it" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed the structure and errors related to it" />
   </component>
 </project>

@@ -1,8 +1,8 @@
 """Initial
 
-Revision ID: 932b4c6470d4
+Revision ID: f3d041ebd699
 Revises: 
-Create Date: 2024-10-28 22:08:52.786272
+Create Date: 2024-10-29 01:26:26.430831
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '932b4c6470d4'
+revision: str = 'f3d041ebd699'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -27,7 +27,7 @@ def upgrade() -> None:
     sa.Column('filled', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('student',
+    op.create_table('user',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.String(), nullable=False),
     sa.Column('email', sa.String(), nullable=False),
@@ -45,7 +45,7 @@ def upgrade() -> None:
     sa.Column('preferred_dormitory_id', sa.Integer(), nullable=True),
     sa.Column('preferred_floor', sa.Integer(), nullable=True),
     sa.Column('submission_date', sa.TIMESTAMP(), nullable=False),
-    sa.ForeignKeyConstraint(['student_id'], ['student.id'], ),
+    sa.ForeignKeyConstraint(['student_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('room',
@@ -70,7 +70,7 @@ def upgrade() -> None:
     sa.Column('application_id', sa.Integer(), nullable=True),
     sa.Column('preferred_student_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['application_id'], ['application.id'], ),
-    sa.ForeignKeyConstraint(['preferred_student_id'], ['student.id'], ),
+    sa.ForeignKeyConstraint(['preferred_student_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('status',
@@ -78,7 +78,7 @@ def upgrade() -> None:
     sa.Column('student_id', sa.Integer(), nullable=True),
     sa.Column('status', sa.String(), nullable=False),
     sa.ForeignKeyConstraint(['application_id'], ['application.id'], ),
-    sa.ForeignKeyConstraint(['student_id'], ['student.id'], )
+    sa.ForeignKeyConstraint(['student_id'], ['user.id'], )
     )
     op.create_table('assignment',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -86,7 +86,7 @@ def upgrade() -> None:
     sa.Column('bad_id', sa.Integer(), nullable=True),
     sa.Column('application_status', sa.String(), nullable=False),
     sa.ForeignKeyConstraint(['bad_id'], ['bad.id'], ),
-    sa.ForeignKeyConstraint(['student_id'], ['student.id'], ),
+    sa.ForeignKeyConstraint(['student_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
@@ -100,6 +100,6 @@ def downgrade() -> None:
     op.drop_table('bad')
     op.drop_table('room')
     op.drop_table('application')
-    op.drop_table('student')
+    op.drop_table('user')
     op.drop_table('dormitory')
     # ### end Alembic commands ###
