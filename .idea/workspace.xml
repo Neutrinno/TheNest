@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87ee7061-78f2-48d9-97f9-71ce7fe0d338" name="Changes" comment="Change database.py: change class User and remove an unnecessary function">
-      <change afterPath="$PROJECT_DIR$/src/auth/auth.py" afterDir="false" />
+    <list default="true" id="87ee7061-78f2-48d9-97f9-71ce7fe0d338" name="Changes" comment="Created Usermanager">
+      <change afterPath="$PROJECT_DIR$/src/auth/schemas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +129,23 @@
       <option name="project" value="LOCAL" />
       <updated>1730143365549</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Created auth.py to create a backend when working with FastAPIUsers">
+      <option name="closed" value="true" />
+      <created>1730143682272</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1730143682272</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Created Usermanager">
+      <option name="closed" value="true" />
+      <created>1730143914608</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1730143914608</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -150,6 +167,8 @@
     <MESSAGE value="Added folder for authentication" />
     <MESSAGE value="A file has been created database.py to interact with the database during authentication" />
     <MESSAGE value="Change database.py: change class User and remove an unnecessary function" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change database.py: change class User and remove an unnecessary function" />
+    <MESSAGE value="Created auth.py to create a backend when working with FastAPIUsers" />
+    <MESSAGE value="Created Usermanager" />
+    <option name="LAST_COMMIT_MESSAGE" value="Created Usermanager" />
   </component>
 </project>
