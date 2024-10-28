@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87ee7061-78f2-48d9-97f9-71ce7fe0d338" name="Changes" comment="Created routers in main.py">
+    <list default="true" id="87ee7061-78f2-48d9-97f9-71ce7fe0d338" name="Changes" comment="Change env.py and alembic.ini for use asyncpg">
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/src/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/alembic.ini" beforeDir="false" afterPath="$PROJECT_DIR$/alembic.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/migration/env.py" beforeDir="false" afterPath="$PROJECT_DIR$/migration/env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/auth/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/auth/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/schemas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,6 +51,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/models" />
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
@@ -64,7 +70,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/main.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -162,7 +168,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730144539994</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Change env.py and alembic.ini for use asyncpg">
+      <option name="closed" value="true" />
+      <created>1730145008584</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1730145008584</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -188,6 +202,7 @@
     <MESSAGE value="Created Usermanager" />
     <MESSAGE value="Created schemas.py" />
     <MESSAGE value="Created routers in main.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="Created routers in main.py" />
+    <MESSAGE value="Change env.py and alembic.ini for use asyncpg" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change env.py and alembic.ini for use asyncpg" />
   </component>
 </project>

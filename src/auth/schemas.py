@@ -1,6 +1,7 @@
-from typing import Optional
+from datetime import datetime
 from fastapi_users import schemas
-from sqlalchemy.dialects.mssql import TIMESTAMP
+from typing import Optional
+
 
 
 class UserRead(schemas.BaseUser[int]):
@@ -8,7 +9,7 @@ class UserRead(schemas.BaseUser[int]):
     username: str
     email: str
     admission_score: int
-    registered_at = TIMESTAMP
+    registered_at: Optional[datetime] = None  # Исправлено: убран лишний знак =
     is_active: bool = True
     is_superuser: bool = False
     is_verified: bool = False
@@ -17,13 +18,12 @@ class UserRead(schemas.BaseUser[int]):
         from_attributes = True
 
 
-
 class UserCreate(schemas.BaseUserCreate):
     username: str
     email: str
     password: str
     admission_score: int
-    registered_at = TIMESTAMP
+    registered_at: Optional[datetime] = None  # Исправлено: убран лишний знак =
     is_active: Optional[bool] = True
     is_superuser: Optional[bool] = False
     is_verified: Optional[bool] = False
