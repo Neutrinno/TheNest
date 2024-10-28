@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87ee7061-78f2-48d9-97f9-71ce7fe0d338" name="Changes" comment="Created Usermanager">
-      <change afterPath="$PROJECT_DIR$/src/auth/schemas.py" afterDir="false" />
+    <list default="true" id="87ee7061-78f2-48d9-97f9-71ce7fe0d338" name="Changes" comment="Created routers in main.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/alembic.ini" beforeDir="false" afterPath="$PROJECT_DIR$/alembic.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migration/env.py" beforeDir="false" afterPath="$PROJECT_DIR$/migration/env.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,7 +146,23 @@
       <option name="project" value="LOCAL" />
       <updated>1730143914608</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Created schemas.py">
+      <option name="closed" value="true" />
+      <created>1730144340919</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1730144340919</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Created routers in main.py">
+      <option name="closed" value="true" />
+      <created>1730144539994</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1730144539994</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -169,6 +186,8 @@
     <MESSAGE value="Change database.py: change class User and remove an unnecessary function" />
     <MESSAGE value="Created auth.py to create a backend when working with FastAPIUsers" />
     <MESSAGE value="Created Usermanager" />
-    <option name="LAST_COMMIT_MESSAGE" value="Created Usermanager" />
+    <MESSAGE value="Created schemas.py" />
+    <MESSAGE value="Created routers in main.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Created routers in main.py" />
   </component>
 </project>
