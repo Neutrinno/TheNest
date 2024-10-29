@@ -1,5 +1,4 @@
-from datetime import datetime
-from sqlalchemy import MetaData, Table, Column, Integer, String, TIMESTAMP, ForeignKey, Boolean
+from sqlalchemy import MetaData, Table, Column, Integer, String, TIMESTAMP, ForeignKey, Boolean, func
 
 metadata = MetaData()
 
@@ -10,7 +9,7 @@ user = Table(
     Column("username", String, nullable=False),
     Column("email", String, nullable = False),
     Column("admission_score", Integer, nullable=False),
-    Column("registered_at", TIMESTAMP, default = datetime.utcnow),
+    Column("registered_at", TIMESTAMP(timezone=True), server_default=func.now(), nullable=False),
     Column("hashed_password", String(length=1024), nullable=False),
     Column("is_active", Boolean, default=True, nullable=False),
     Column("is_superuser", Boolean, default=False, nullable=False),
