@@ -6,14 +6,22 @@ user = Table(
    "user",
     metadata,
     Column("id", Integer, primary_key = True),
-    Column("username", String, nullable=False),
     Column("email", String, nullable = False),
-    Column("admission_score", Integer, nullable=False),
     Column("registered_at", TIMESTAMP(timezone=True), server_default=func.now(), nullable=False),
     Column("hashed_password", String(length=1024), nullable=False),
     Column("is_active", Boolean, default=True, nullable=False),
     Column("is_superuser", Boolean, default=False, nullable=False),
     Column("is_verified", Boolean, default=False, nullable=False),
+)
+
+info = Table(
+   "info",
+    metadata,
+    Column("id", Integer, primary_key = True),
+    Column("id", Integer, primary_key=True),
+    Column("email", String, nullable = False),
+    Column("admission_score", Integer, nullable=False),
+
 )
 
 

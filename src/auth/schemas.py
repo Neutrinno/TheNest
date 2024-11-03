@@ -9,7 +9,7 @@ class UserRead(schemas.BaseUser[int]):
     username: str
     email: str
     admission_score: int
-    registered_at: Optional[datetime] = None  # Исправлено: убран лишний знак =
+    registered_at: Optional[datetime] = None
     is_active: bool = True
     is_superuser: bool = False
     is_verified: bool = False
@@ -23,7 +23,7 @@ class UserCreate(schemas.BaseUserCreate):
     email: str
     password: str
     admission_score: int
-    registered_at: Optional[datetime] = None  # Исправлено: убран лишний знак =
+    registered_at: Optional[datetime] = None
     is_active: Optional[bool] = True
     is_superuser: Optional[bool] = False
     is_verified: Optional[bool] = False

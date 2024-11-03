@@ -11,8 +11,7 @@ fastapi_users = FastAPIUsers[User, int](
     [auth_backend],
 )
 
-app = FastAPI(
-)
+app = FastAPI(title = 'TheNest')
 
 
 app.include_router(
