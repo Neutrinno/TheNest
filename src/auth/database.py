@@ -16,9 +16,7 @@ class Base(DeclarativeBase):
 
 class User(SQLAlchemyBaseUserTable[int], Base):
     id = Column(Integer, primary_key = True)
-    username = Column(String, nullable=False)
     email = Column(String, nullable = False)
-    admission_score = Column(Integer, nullable=False)
     registered_at = Column(TIMESTAMP(timezone=True), server_default=func.now(), nullable=False)
     hashed_password: str = Column(String(length=1024), nullable=False)
     is_active: bool = Column(Boolean, default=True, nullable=False)

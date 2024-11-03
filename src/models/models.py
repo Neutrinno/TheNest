@@ -14,11 +14,12 @@ user = Table(
     Column("is_verified", Boolean, default=False, nullable=False),
 )
 
-info = Table(
-   "info",
+information = Table(
+   "information",
     metadata,
     Column("id", Integer, primary_key = True),
-    Column("id", Integer, primary_key=True),
+    Column("student_id", Integer, ForeignKey(user.c.id)),
+    Column("full_name", String, nullable = False),
     Column("email", String, nullable = False),
     Column("admission_score", Integer, nullable=False),
 
