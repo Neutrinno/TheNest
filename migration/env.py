@@ -3,7 +3,7 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
 from src.config import DB_PASS, DB_USER, DB_HOST, DB_PORT, DB_NAME
-from src.models.models import metadata
+from src.models import metadata
 import os
 import sys
 
