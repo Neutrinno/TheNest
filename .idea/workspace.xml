@@ -4,11 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87ee7061-78f2-48d9-97f9-71ce7fe0d338" name="Changes" comment="Reargonized db" />
+    <list default="true" id="87ee7061-78f2-48d9-97f9-71ce7fe0d338" name="Changes" comment="Deleted the extra lines from auth">
+      <change afterPath="$PROJECT_DIR$/src/applications/router.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/applications/schemas.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -216,7 +227,23 @@
       <option name="project" value="LOCAL" />
       <updated>1730663175357</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Reargonized db">
+      <option name="closed" value="true" />
+      <created>1730664044505</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1730664044505</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Deleted the extra lines from auth">
+      <option name="closed" value="true" />
+      <created>1730664109567</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1730664109567</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -248,6 +275,7 @@
     <MESSAGE value="html" />
     <MESSAGE value="Reargonized the structure" />
     <MESSAGE value="Reargonized db" />
-    <option name="LAST_COMMIT_MESSAGE" value="Reargonized db" />
+    <MESSAGE value="Deleted the extra lines from auth" />
+    <option name="LAST_COMMIT_MESSAGE" value="Deleted the extra lines from auth" />
   </component>
 </project>
