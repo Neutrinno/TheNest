@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87ee7061-78f2-48d9-97f9-71ce7fe0d338" name="Changes" comment="Deleted the extra lines from auth">
-      <change afterPath="$PROJECT_DIR$/src/applications/router.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/applications/schemas.py" afterDir="false" />
+    <list default="true" id="87ee7061-78f2-48d9-97f9-71ce7fe0d338" name="Changes" comment="rename user table">
+      <change afterPath="$PROJECT_DIR$/src/applications/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -243,7 +242,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730664109567</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="rename user table">
+      <option name="closed" value="true" />
+      <created>1730712926846</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1730712926846</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -276,6 +283,18 @@
     <MESSAGE value="Reargonized the structure" />
     <MESSAGE value="Reargonized db" />
     <MESSAGE value="Deleted the extra lines from auth" />
-    <option name="LAST_COMMIT_MESSAGE" value="Deleted the extra lines from auth" />
+    <MESSAGE value="rename user table" />
+    <option name="LAST_COMMIT_MESSAGE" value="rename user table" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/applications/database.py</url>
+          <line>4</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
