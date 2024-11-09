@@ -22,7 +22,6 @@ information = Table(
     Column("full_name", String, nullable = False),
     Column("email", String, nullable = False),
     Column("admission_score", Integer, nullable=False),
-
 )
 
 
@@ -85,6 +84,7 @@ status = Table(
     Column("student_id", Integer, ForeignKey(users.c.id)),
     Column("status", String, nullable = False),
 )
+
 
 roommate_preference = Table(
     "roommate_preference",
