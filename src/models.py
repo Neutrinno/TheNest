@@ -30,8 +30,6 @@ class Information(Base):
     student_id = Column(Integer, ForeignKey("users.id"))
     full_name = Column(String, nullable=False)
     email = Column(String, nullable=False)
-    admission_score = Column(Integer, nullable=False)
-
 
 class Dormitory(Base):
     __tablename__ = "dormitory"
@@ -82,11 +80,11 @@ class Application(Base):
     id = Column(Integer, primary_key=True)
     student_id = Column(Integer, ForeignKey("users.id"))
     full_name = Column(String, nullable=False)
-    preferred_dormitory_id = Column(Integer)
+    admission_score = Column(Integer, nullable=False)
+    preferred_dormitory = Column(Integer)
     preferred_floor = Column(Integer)
     submission_date = Column(TIMESTAMP, nullable=False)
 
-    roommate_preferences = relationship("RoommatePreference", backref="application")
     status_updates = relationship("Status", backref="application")
 
 
@@ -103,4 +101,6 @@ class RoommatePreference(Base):
 
     id = Column(Integer, primary_key=True)
     student_id = Column(Integer, ForeignKey("users.id"))
-    preferred_student = Column(String, nullable=False)
+    first_preferred_student = Column(String)
+    second_preferred_student = Column(String)
+    third_preferred_student = Column(String)
