@@ -4,6 +4,7 @@ from typing import Optional, Annotated
 from fastapi import APIRouter
 from fastapi.params import Depends
 from pydantic import BaseModel, EmailStr, Field
+from sqlalchemy import select, Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.applications.database import get_async_session
@@ -18,8 +19,8 @@ class StudentId(BaseModel):
 class ApplicationCreate(StudentId):
     full_name: str
     admission_score: int = Field(gt=0, lt=101)
-    preferred_dormitory: Optional[Annotated[int, Field(ge=0)]]
-    preferred_floor: Optional[Annotated[int, Field(ge=0)]]
+    preferred_dormitory: Optional[Annotated[int, Field(ge=0)]] = None
+    preferred_floor: Optional[Annotated[int, Field(ge=0)]] = None
 
 class RoommateCreate(StudentId):
     first_preferred_student: Optional[EmailStr] = None
@@ -43,7 +44,9 @@ async def create_application(new_application: ApplicationCreate,
         await session.commit()
         await session.refresh(roommate_preference)
 
+    query = await select(application).where(application.student_id == Application.student_id)
+    result: Result = await session.execute(query)
+    application_id = result.scalars.first()
 
-
-    return {"message": "Your application has been successfully registered"}
+    return {"message": f"Your application has been successfully registered. Number of application: {application_id}"}
 
