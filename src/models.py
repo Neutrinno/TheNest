@@ -1,4 +1,5 @@
-from sqlalchemy import Table, Column, Integer, String, TIMESTAMP, ForeignKey, Boolean, func
+from pydantic import EmailStr
+from sqlalchemy import  Column, Integer, String, TIMESTAMP, ForeignKey, Boolean, func
 from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
@@ -51,7 +52,7 @@ class Room(Base):
     room_number = Column(String, nullable=False)
     floor = Column(Integer, nullable=False)
     capacity = Column(Integer, nullable=False)
-    filled = Column(Boolean, default=False, nullable=False)
+    filled = Column(Boolean, default=False, nullable=False) #Если писать списком от этого нужно избавиться
 
     beds = relationship("Bad", backref="room")  # One-to-many relationship
 
@@ -80,6 +81,7 @@ class Application(Base):
 
     id = Column(Integer, primary_key=True)
     student_id = Column(Integer, ForeignKey("users.id"))
+    full_name = Column(String, nullable=False)
     preferred_dormitory_id = Column(Integer)
     preferred_floor = Column(Integer)
     submission_date = Column(TIMESTAMP, nullable=False)
@@ -93,7 +95,7 @@ class Status(Base):
     __tablename__ = "status"
 
     application_id = Column(Integer, ForeignKey("application.id"), primary_key=True)
-    student_id = Column(Integer, ForeignKey("users.id"), primary_key=True)  # Добавляем student_id в составной ключ
+    student_id = Column(Integer, ForeignKey("users.id"), primary_key=True)
     status = Column(String, nullable=False)
 
 
@@ -102,4 +104,4 @@ class RoommatePreference(Base):
 
     id = Column(Integer, primary_key=True)
     application_id = Column(Integer, ForeignKey("application.id"))
-    preferred_student_id = Column(Integer, ForeignKey("users.id"))
+    preferred_student = Column(EmailStr, ForeignKey("users.email"))
