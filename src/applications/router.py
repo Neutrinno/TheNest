@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Annotated
 
 from fastapi import APIRouter
 from fastapi.params import Depends
@@ -18,8 +18,8 @@ class ApplicationCreate(BaseModel):
     email: EmailStr
     admission_score: int = Field(gt=0, lt=100)
     preferred_student: EmailStr
-    preferred_dormitory = Optional[int]
-    preferred_floor = Optional[int]
+    preferred_dormitory: Optional[Annotated[int, Field(ge=0)]]
+    preferred_floor: Optional[Annotated[int, Field(ge=0)]]
 
 class RoommateCreate(BaseModel):
     preferred_student: EmailStr
