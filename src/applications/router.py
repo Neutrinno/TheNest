@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional, Annotated
 
 from fastapi import APIRouter
@@ -11,32 +12,38 @@ from src.setting import settings
 
 router = APIRouter(prefix = settings.application.prefix, tags=[settings.application.tags])
 
-
-class ApplicationCreate(BaseModel):
+class StudentId(BaseModel):
     student_id: int
+
+class ApplicationCreate(StudentId):
     full_name: str
-    email: EmailStr
-    admission_score: int = Field(gt=0, lt=100)
-    preferred_student: EmailStr
+    admission_score: int = Field(gt=0, lt=101)
     preferred_dormitory: Optional[Annotated[int, Field(ge=0)]]
     preferred_floor: Optional[Annotated[int, Field(ge=0)]]
 
-class RoommateCreate(BaseModel):
-    preferred_student: EmailStr
+class RoommateCreate(StudentId):
+    first_preferred_student: Optional[EmailStr] = None
+    second_preferred_student: Optional[EmailStr] = None
+    third_preferred_student: Optional[EmailStr] = None
 
-@router.post("/", response_model= ApplicationCreate)
+@router.post("/")
 async def create_application(new_application: ApplicationCreate,
                              new_roommate: RoommateCreate,
                              session: AsyncSession = Depends(get_async_session)):
-
-    application = Application(**new_application.dict())
+    now = datetime.now()
+    application = Application(**new_application.dict(),
+                              submission_date=now)
     session.add(application)
     await session.commit()
     await session.refresh(application)
 
-    roommate_preferance = RoommatePreference(student_id = ApplicationCreate.student_id, **new_roommate.dict())
+    if any(new_roommate.dict().values()):
+        roommate_preference = RoommatePreference(**new_roommate.dict())
+        session.add(roommate_preference)
+        await session.commit()
+        await session.refresh(roommate_preference)
 
-    session.add(roommate_preferance)
-    await session.commit()
-    await session.refresh(roommate_preferance)
+
+
     return {"message": "Your application has been successfully registered"}
+
