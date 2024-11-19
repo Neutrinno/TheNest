@@ -49,4 +49,3 @@ async def create_application(new_application: ApplicationCreate,
     application_id = result.scalars.first()
 
     return {"message": f"Your application has been successfully registered. Number of application: {application_id}"}
-
