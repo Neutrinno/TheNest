@@ -16,11 +16,11 @@ class User(Base):
     is_superuser = Column(Boolean, default=False, nullable=False)
     is_verified = Column(Boolean, default=False, nullable=False)
 
-    information = relationship("Information", backref="user", uselist=False)  # One-to-one relationship
-    assignments = relationship("Assignment", backref="user")  # One-to-many relationship
-    applications = relationship("Application", backref="user")  # One-to-many relationship
-    status_updates = relationship("Status", backref="user")  # One-to-many relationship
-    roommate_preferences = relationship("RoommatePreference", backref="user") # One-to-many relationship
+    information = relationship("Information", backref="user", uselist=False)
+    assignments = relationship("Assignment", backref="user")
+    applications = relationship("Application", backref="user")
+    status_updates = relationship("Status", backref="user")
+    roommate_preferences = relationship("RoommatePreference", backref="user")
 
 
 class Information(Base):
@@ -41,7 +41,7 @@ class Dormitory(Base):
     address = Column(String, nullable=False)
     filled = Column(String, nullable=False)
 
-    rooms = relationship("Room", backref="dormitory")  # One-to-many relationship
+    rooms = relationship("Room", backref="dormitory")
 
 
 class Room(Base):
@@ -52,9 +52,9 @@ class Room(Base):
     room_number = Column(String, nullable=False)
     floor = Column(Integer, nullable=False)
     capacity = Column(Integer, nullable=False)
-    filled = Column(Boolean, default=False, nullable=False) #Если писать списком от этого нужно избавиться
+    filled = Column(Boolean, default=False, nullable=False)
 
-    beds = relationship("Bad", backref="room")  # One-to-many relationship
+    beds = relationship("Bad", backref="room")
 
 
 class Bad(Base):
@@ -65,7 +65,7 @@ class Bad(Base):
     is_occupied = Column(Boolean, default=False, nullable=False)
 
     # Relationships
-    assignments = relationship("Assignment", backref="bed")  # One-to-many relationship
+    assignments = relationship("Assignment", backref="bed")
 
 
 class Assignment(Base):
@@ -86,16 +86,15 @@ class Application(Base):
     preferred_floor = Column(Integer)
     submission_date = Column(TIMESTAMP, nullable=False)
 
-    # Relationships
-    roommate_preferences = relationship("RoommatePreference", backref="application")  # One-to-many relationship
-    status_updates = relationship("Status", backref="application")  # One-to-many relationship
+    roommate_preferences = relationship("RoommatePreference", backref="application")
+    status_updates = relationship("Status", backref="application")
 
 
 class Status(Base):
     __tablename__ = "status"
 
     application_id = Column(Integer, ForeignKey("application.id"), primary_key=True)
-    student_id = Column(Integer, ForeignKey("users.id"), primary_key=True)
+    student_id = Column(Integer, ForeignKey("users.id"))
     status = Column(String, nullable=False)
 
 
@@ -103,5 +102,5 @@ class RoommatePreference(Base):
     __tablename__ = "roommate_preference"
 
     id = Column(Integer, primary_key=True)
-    application_id = Column(Integer, ForeignKey("application.id"))
-    preferred_student = Column(EmailStr, ForeignKey("users.email"))
+    student_id = Column(Integer, ForeignKey("users.id"))
+    preferred_student = Column(String, nullable=False)
