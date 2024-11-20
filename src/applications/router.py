@@ -1,31 +1,15 @@
 from datetime import datetime
-from typing import Optional, Annotated
-
 from fastapi import APIRouter
 from fastapi.params import Depends
-from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy import select, Result
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from src.applications.database import get_async_session
+from src.applications.schemas import ApplicationCreate, RoommateCreate
 from src.models import Application, RoommatePreference
 from src.setting import settings
 
 router = APIRouter(prefix = settings.application.prefix, tags=[settings.application.tags])
 
-class StudentId(BaseModel):
-    student_id: int
-
-class ApplicationCreate(StudentId):
-    full_name: str
-    admission_score: int = Field(gt=0, lt=101)
-    preferred_dormitory: Optional[Annotated[int, Field(ge=0)]] = None
-    preferred_floor: Optional[Annotated[int, Field(ge=0)]] = None
-
-class RoommateCreate(StudentId):
-    first_preferred_student: Optional[EmailStr] = None
-    second_preferred_student: Optional[EmailStr] = None
-    third_preferred_student: Optional[EmailStr] = None
 
 @router.post("/")
 async def create_application(new_application: ApplicationCreate,
