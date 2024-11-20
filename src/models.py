@@ -15,11 +15,9 @@ class User(Base):
     is_superuser = Column(Boolean, default=False, nullable=False)
     is_verified = Column(Boolean, default=False, nullable=False)
 
-    information = relationship("Information", backref="user", uselist=False)
     assignments = relationship("Assignment", backref="user")
     applications = relationship("Application", backref="user")
     status_updates = relationship("Status", backref="user")
-    roommate_preferences = relationship("RoommatePreference", backref="user")
 
 
 class Dormitory(Base):
@@ -81,6 +79,7 @@ class Application(Base):
     second_preferred_student = Column(String)
     third_preferred_student = Column(String)
 
+    status_updates = relationship("Status", backref="application")
     status_updates = relationship("Status", backref="application")
 
 
