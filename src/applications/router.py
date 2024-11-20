@@ -6,9 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.applications.database import get_async_session
 from src.applications.schemas import ApplicationCreate, RoommateCreate
 from src.models import Application, RoommatePreference
-from src.setting import settings
 
-router = APIRouter(prefix = settings.application.prefix, tags=[settings.application.tags])
+router = APIRouter()
 
 
 @router.post("/")
