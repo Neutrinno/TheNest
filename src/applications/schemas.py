@@ -1,8 +1,11 @@
+import enum
 from typing import Optional, Annotated
 from pydantic import BaseModel, EmailStr, Field
 
 class StudentId(BaseModel):
     student_id: int
+    class Config:
+        from_attributes = True
 
 class ApplicationCreate(StudentId):
     first_name: str
@@ -15,7 +18,13 @@ class ApplicationCreate(StudentId):
     second_preferred_student: Optional[EmailStr] = None
     third_preferred_student: Optional[EmailStr] = None
 
-class RoommateCreate(StudentId):
-    first_preferred_student: Optional[EmailStr] = None
-    second_preferred_student: Optional[EmailStr] = None
-    third_preferred_student: Optional[EmailStr] = None
+
+class StatusEnum(str, enum.Enum):
+    Processing = "В обработке"
+    Waiting = "Ожидает очереди"
+    Rejected = "Отклонено"
+    Approved = "Одобрено"
+
+class Status(StudentId):
+    application_id: int
+    status: StatusEnum = Field(default=StatusEnum.Processing)
