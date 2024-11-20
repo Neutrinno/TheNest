@@ -1,4 +1,3 @@
-from pydantic import EmailStr
 from sqlalchemy import  Column, Integer, String, TIMESTAMP, ForeignKey, Boolean, func
 from sqlalchemy.orm import declarative_base, relationship
 
@@ -22,14 +21,6 @@ class User(Base):
     status_updates = relationship("Status", backref="user")
     roommate_preferences = relationship("RoommatePreference", backref="user")
 
-
-class Information(Base):
-    __tablename__ = "information"
-
-    id = Column(Integer, primary_key=True)
-    student_id = Column(Integer, ForeignKey("users.id"))
-    full_name = Column(String, nullable=False)
-    email = Column(String, nullable=False)
 
 class Dormitory(Base):
     __tablename__ = "dormitory"
@@ -79,11 +70,16 @@ class Application(Base):
 
     id = Column(Integer, primary_key=True)
     student_id = Column(Integer, ForeignKey("users.id"))
-    full_name = Column(String, nullable=False)
+    first_name = Column(String, nullable=False)
+    surname = Column(String, nullable=False)
+    middle_name = Column(String)
     admission_score = Column(Integer, nullable=False)
     preferred_dormitory = Column(Integer)
     preferred_floor = Column(Integer)
     submission_date = Column(TIMESTAMP, nullable=False)
+    first_preferred_student = Column(String)
+    second_preferred_student = Column(String)
+    third_preferred_student = Column(String)
 
     status_updates = relationship("Status", backref="application")
 
@@ -96,11 +92,3 @@ class Status(Base):
     status = Column(String, nullable=False)
 
 
-class RoommatePreference(Base):
-    __tablename__ = "roommate_preference"
-
-    id = Column(Integer, primary_key=True)
-    student_id = Column(Integer, ForeignKey("users.id"))
-    first_preferred_student = Column(String)
-    second_preferred_student = Column(String)
-    third_preferred_student = Column(String)
