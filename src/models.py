@@ -90,6 +90,6 @@ class Status(Base):
 class StudentListing(Base):
     __tablename__ = "student_listing"
 
-    id = Column(Integer, primary_key=True)
+    student_id = Column(Integer, primary_key=True)
     admission_score = Column(Integer, nullable=False)
     status = Column(String, nullable=False)
