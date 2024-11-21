@@ -46,8 +46,8 @@ app.include_router(
 
 app.include_router(
     distribution_router,
-    prefix=settings.application.prefix,
-    tags=[settings.application.tags]
+    prefix=settings.distribution.prefix,
+    tags=[settings.distribution.tags]
 )
 
 if __name__ == "__main__":
