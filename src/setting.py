@@ -13,10 +13,14 @@ class ApplicationPrefix(BaseModel):
     prefix: str = "/application"
     tags: str = "application"
 
+class DistributionPrefix(BaseModel):
+    prefix: str = "/distribution"
+    tags: str = "distribution"
+
 class Settings(BaseSettings):
     application: ApplicationPrefix = ApplicationPrefix()
     auth: AuthPrefix = AuthPrefix()
     registration: RegisterPrefix = RegisterPrefix()
-
+    distribution: DistributionPrefix=DistributionPrefix()
 
 settings = Settings()

@@ -1,5 +1,6 @@
 import uvicorn
 from src.applications.router import router as application_router
+from src.distribution.router import router as distribution_router
 from fastapi import FastAPI, Depends
 from fastapi_users import FastAPIUsers
 from src.setting import settings
@@ -39,6 +40,12 @@ def protected_route(user: User = Depends(current_user)):
 
 app.include_router(
     application_router,
+    prefix=settings.application.prefix,
+    tags=[settings.application.tags]
+)
+
+app.include_router(
+    distribution_router,
     prefix=settings.application.prefix,
     tags=[settings.application.tags]
 )
