@@ -51,7 +51,6 @@ class Bad(Base):
     room_id = Column(Integer, ForeignKey("room.id"))
     is_occupied = Column(Boolean, default=False, nullable=False)
 
-    # Relationships
     assignments = relationship("Assignment", backref="bed")
 
 
@@ -80,8 +79,6 @@ class Application(Base):
     third_preferred_student = Column(String)
 
     status_updates = relationship("Status", backref="application")
-    status_updates = relationship("Status", backref="application")
-
 
 class Status(Base):
     __tablename__ = "status"
@@ -90,4 +87,8 @@ class Status(Base):
     student_id = Column(Integer, ForeignKey("users.id"))
     status = Column(String, nullable=False)
 
+class StudentListing(Base):
+    __tablename__ = "student_listing"
 
+    id = Column(Integer, primary_key=True)
+    admission_score = Column(Integer, nullable=False)
