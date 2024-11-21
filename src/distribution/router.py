@@ -16,7 +16,10 @@ async def get_distribution(session: AsyncSession = Depends(get_async_session)):
     result = await session.execute(query)
     student_list = result.all()
 
-    students_to_add = [StudentListing(id=id_, admission_score=score) for id_, score in student_list]
+    students_to_add = []
+    for index, (id_, score) in enumerate(student_list):
+        status = "одобренно" if index < 67 else "в очереди"
+        students_to_add.append(StudentListing(id=id_, admission_score=score, status=status))
 
     session.add_all(students_to_add)
     await session.commit()

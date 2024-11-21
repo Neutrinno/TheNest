@@ -92,3 +92,4 @@ class StudentListing(Base):
 
     id = Column(Integer, primary_key=True)
     admission_score = Column(Integer, nullable=False)
+    status = Column(String, nullable=False)
