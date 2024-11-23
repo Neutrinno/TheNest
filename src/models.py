@@ -24,9 +24,9 @@ class Dormitory(Base):
     __tablename__ = "dormitory"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
     address = Column(String, nullable=False)
-    filled = Column(String, nullable=False)
+    quantity_floor = Column(Integer, nullable=False)
+    quantity_place = Column(Integer, nullable=False)
 
     rooms = relationship("Room", backref="dormitory")
 
