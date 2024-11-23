@@ -27,6 +27,7 @@ class Dormitory(Base):
     address = Column(String, nullable=False)
     quantity_floor = Column(Integer, nullable=False)
     quantity_place = Column(Integer, nullable=False)
+    is_occupied = Column(Boolean, nullable=False, default=False)
 
     rooms = relationship("Room", backref="dormitory")
 
@@ -39,7 +40,7 @@ class Room(Base):
     room_number = Column(String, nullable=False)
     floor = Column(Integer, nullable=False)
     capacity = Column(Integer, nullable=False)
-    filled = Column(Boolean, default=False, nullable=False)
+    is_occupied = Column(Boolean, nullable=False, default=False)
 
     beds = relationship("Bad", backref="room")
 
