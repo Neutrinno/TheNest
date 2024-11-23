@@ -11,7 +11,7 @@ class ApplicationCreate(StudentId):
     first_name: str
     surname: str
     middle_name: str
-    admission_score: int = Field(gt=0, lt=101)
+    admission_score: int = Field(ge=0, lt=101)
     preferred_dormitory: Optional[Annotated[int, Field(ge=0)]] = None
     preferred_floor: Optional[Annotated[int, Field(ge=0)]] = None
     first_preferred_student: Optional[EmailStr] = None
