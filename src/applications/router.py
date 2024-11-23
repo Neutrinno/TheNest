@@ -22,7 +22,8 @@ async def create_application(new_application: ApplicationCreate,
 
     statement = Status(application_id=application_id,
                        student_id=application.student_id,
-                       status="В обработке",)
+                       status="В обработке")
+
     session.add(statement)
     await session.commit()
     await session.refresh(statement)
