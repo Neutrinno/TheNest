@@ -19,7 +19,6 @@ class User(Base):
     applications = relationship("Application", backref="user")
     status_updates = relationship("Status", backref="user")
 
-
 class Dormitory(Base):
     __tablename__ = "dormitory"
 
@@ -42,11 +41,11 @@ class Room(Base):
     capacity = Column(Integer, nullable=False)
     is_occupied = Column(Boolean, nullable=False, default=False)
 
-    beds = relationship("Bad", backref="room")
+    beds = relationship("Bed", backref="room")
 
 
-class Bad(Base):
-    __tablename__ = "bad"
+class Bed(Base):
+    __tablename__ = "bed"
 
     id = Column(Integer, primary_key=True)
     room_id = Column(Integer, ForeignKey("room.id"))
@@ -55,12 +54,13 @@ class Bad(Base):
     assignments = relationship("Assignment", backref="bed")
 
 
+
 class Assignment(Base):
     __tablename__ = "assignment"
 
     id = Column(Integer, primary_key=True)
     student_id = Column(Integer, ForeignKey("users.id"))
-    bad_id = Column(Integer, ForeignKey("bad.id"))
+    bed_id = Column(Integer, ForeignKey("bed.id"))
     application_status = Column(String, nullable=False)
 
 class Application(Base):
