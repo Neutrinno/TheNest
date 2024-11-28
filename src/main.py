@@ -1,6 +1,7 @@
 import uvicorn
 from src.applications.router import router as application_router
 from src.distribution.router import router as distribution_router
+from src.redistribution.router import router as redistribution_router
 from fastapi import FastAPI, Depends
 from fastapi_users import FastAPIUsers
 from src.setting import settings
@@ -48,6 +49,12 @@ app.include_router(
     distribution_router,
     prefix=settings.distribution.prefix,
     tags=[settings.distribution.tags]
+)
+
+app.include_router(
+    redistribution_router,
+    prefix=settings.redistribution.prefix,
+    tags=[settings.redistribution.tags]
 )
 
 if __name__ == "__main__":

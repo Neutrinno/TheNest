@@ -17,10 +17,15 @@ class DistributionPrefix(BaseModel):
     prefix: str = "/distribution"
     tags: str = "distribution"
 
+class RedistributionPrefix(BaseModel):
+    prefix: str = "/redistribution"
+    tags: str = "redistribution"
+
 class Settings(BaseSettings):
     application: ApplicationPrefix = ApplicationPrefix()
     auth: AuthPrefix = AuthPrefix()
     registration: RegisterPrefix = RegisterPrefix()
     distribution: DistributionPrefix=DistributionPrefix()
+    redistribution: RedistributionPrefix=RedistributionPrefix()
 
 settings = Settings()
