@@ -373,21 +373,3 @@ async def get_distribution(session: AsyncSession = Depends(get_async_session)):
     except Exception as e:
         await session.rollback()
         return {"status": "error", "message": f"Произошла ошибка: {str(e)}"}
-
-@router.get("/TheNest/{student_id}", response_model=StudentStatus)
-async def get_information(student_id: int, session: AsyncSession = Depends(get_async_session)):
-    return await session.get(Status, student_id)
-
-@router.get("/get_confirmation/{student_id}", response_model=str)
-async def get_confirmation(student_id: int, session: AsyncSession = Depends(get_async_session)):
-    assignment_stmt = update(Assignment).where(Assignment.student_id == student_id).values(application_status = "Подтвержден")
-    await session.execute(assignment_stmt)
-
-    student_listing_stmt = update(StudentListing).where(StudentListing.student_id == student_id).values(status="Подтвержден")
-    await session.execute(student_listing_stmt)
-
-    status_stmt = update(Status).where(Status.student_id == student_id).values(status = "Подтвержден")
-    await session.execute(status_stmt)
-    await session.commit()
-
-    return "Подтверждение получено"
