@@ -7,7 +7,7 @@ from src.redistribution.database import get_async_session
 router = APIRouter()
 
 @router.get("/", response_model=str)
-async def get_distribution(session: AsyncSession = Depends(get_async_session)):
+async def get_redistribution(session: AsyncSession = Depends(get_async_session)):
     query = select(StudentListing).order_by(StudentListing.admission_score)
     result = await session.execute(query)
     student_list = result.scalars().all()
@@ -16,9 +16,6 @@ async def get_distribution(session: AsyncSession = Depends(get_async_session)):
     waiting = [student for student in student_list if student.status == "Ожидание"]
 
     for student in accepted:
-        assignment_stmt = update(Assignment).where(Assignment.student_id == student.student_id).values(application_status="Отклонено")
-        await session.execute(assignment_stmt)
-
         student_listing_stmt = update(StudentListing).where(StudentListing.student_id == student.student_id).values(status="Отклонено")
         await session.execute(student_listing_stmt)
 
