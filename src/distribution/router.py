@@ -51,7 +51,7 @@ async def assign_bed_to_student(student_id: int, bed_id: int, session: AsyncSess
 
     assignment = Assignment(student_id=student_id,
                             bed_id=bed_id,
-                            application_status="Место в общежитии предоставлено")
+                            application_status="Принято")
     session.add(assignment)
 
     statement = update(Bed).where(Bed.id == bed_id).values(is_occupied=True)
@@ -91,7 +91,7 @@ async def have_dormitory_wishes(application, dormitory, student, session: AsyncS
             return {"status": "error", "message": "Нет свободных кроватей в комнате"}
 
         await assign_bed_to_student(student.student_id, bed.id, session)
-        student.status = "Место в общежитии предоставлено"
+        student.status = "Принято"
 
         await handle_room_occupancy(room.id, session)
         await update_dormitory_occupancy(dormitory.id, session)
@@ -114,7 +114,7 @@ async def have_not_dormitory_wishes(application, all_dormitories, student, sessi
                 bed = await find_free_bed(room.id, session)
                 if bed:
                     await assign_bed_to_student(student.student_id, bed.id, session)
-                    student.status = "Место в общежитии предоставлено"
+                    student.status = "Принято"
 
                     await handle_room_occupancy(room.id, session)
                     await update_dormitory_occupancy(dormitory.id, session)
@@ -214,7 +214,7 @@ async def assign_roommates(session: AsyncSession):
                 preferred_students = result.scalars().all()
 
                 assigned_students = [(user, status) for user, status in preferred_students
-                                     if status.status == "Место в общежитии предоставлено"]
+                                     if status.status == "Принято"]
                 unassigned_students = [(user, status) for user, status in preferred_students
                                        if status.status == "Одобрено"]
 
@@ -237,7 +237,7 @@ async def assign_roommates(session: AsyncSession):
                             if free_bed:
                                 # Подселяем нового студента на свободную кровать
                                 await assign_bed_to_student(student.student_id, free_bed.id, session)
-                                student.status = "Место в общежитии предоставлено"
+                                student.status = "Принято"
 
                                 await handle_room_occupancy(assigned_room.id, session)
 
@@ -272,12 +272,12 @@ async def assign_roommates(session: AsyncSession):
                         for user, _ in unassigned_students:
                             bed = beds.pop()
                             await assign_bed_to_student(user.id, bed.id, session)
-                            student.status = "Место в общежитии предоставлено"
+                            student.status = "Принято"
                             await handle_room_occupancy(bed.room_id, session)
 
                         bed = beds.pop()
                         await assign_bed_to_student(application.student_id, bed.id, session)
-                        student.status = "Место в общежитии предоставлено"
+                        student.status = "Принято"
                         await handle_room_occupancy(bed.room_id, session)
                     else:
                         continue
@@ -317,7 +317,7 @@ async def other_distribution(session: AsyncSession):
 
                     if bed:
                         await assign_bed_to_student(student.student_id, bed.id, session)
-                        student.status = "Место в общежитии предоставлено"
+                        student.status = "Принято"
 
                         await handle_room_occupancy(room.id, session)
                         await update_dormitory_occupancy(dormitory.id, session)
@@ -326,8 +326,7 @@ async def other_distribution(session: AsyncSession):
 
         await session.commit()
 
-        return {"status": "success",
-                "message": "Распределение завершено"}
+        return {"status": "success", "message": "Распределение завершено"}
 
     except Exception as e:
         await session.rollback()
@@ -343,7 +342,7 @@ async def get_distribution(session: AsyncSession = Depends(get_async_session)):
 
         students_to_add = []
         for index, (id_, score) in enumerate(student_list):
-            status = "Одобрено" if index < 80 else "В очереди"
+            status = "Одобрено" if index < 80 else "Ожидание"
 
             application_query = select(Application).where(Application.id == id_).limit(1)
             application_result = await session.execute(application_query)
@@ -384,8 +383,11 @@ async def get_confirmation(student_id: int, session: AsyncSession = Depends(get_
     assignment_stmt = update(Assignment).where(Assignment.student_id == student_id).values(application_status = "Подтвержден")
     await session.execute(assignment_stmt)
 
-    status_stmt = update(Status).where(Status.student_id == student_id).values(status = "Место в общежитии предоставлено")
+    student_listing_stmt = update(StudentListing).where(StudentListing.student_id == student_id).values(status="Подтвержден")
+    await session.execute(student_listing_stmt)
+
+    status_stmt = update(Status).where(Status.student_id == student_id).values(status = "Подтвержден")
     await session.execute(status_stmt)
     await session.commit()
 
-    return "Статус обновлен"
+    return "Подтверждение получено"
