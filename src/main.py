@@ -9,6 +9,8 @@ from src.auth.auth import auth_backend
 from src.auth.database import User
 from src.auth.manager import get_user_manager
 from src.auth.schemas import UserRead, UserCreate
+from pages.router import router as pages_router
+
 
 """Блок, связанный с регистрацией и  аунтификацией"""
 
@@ -55,6 +57,12 @@ app.include_router(
     redistribution_router,
     prefix=settings.redistribution.prefix,
     tags=[settings.redistribution.tags]
+)
+
+app.include_router(
+    pages_router,
+    prefix=settings.pages.prefix,
+    tags=[settings.pages.tags]
 )
 
 if __name__ == "__main__":

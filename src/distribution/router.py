@@ -3,7 +3,7 @@ from fastapi.params import Depends
 from sqlalchemy import select, desc, and_, update, func, Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.distribution.database import get_async_session
-from src.distribution.schemas import StudentList, StudentStatus
+from src.distribution.schemas import StudentList
 from src.models import Application, StudentListing, Room, Bed, Assignment, Dormitory, Status, User
 
 router = APIRouter()

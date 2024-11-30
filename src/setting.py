@@ -21,11 +21,17 @@ class RedistributionPrefix(BaseModel):
     prefix: str = "/redistribution"
     tags: str = "redistribution"
 
+class PagesPrefix(BaseModel):
+    prefix: str = "/pages"
+    tags: str = "pages"
+
+
 class Settings(BaseSettings):
     application: ApplicationPrefix = ApplicationPrefix()
     auth: AuthPrefix = AuthPrefix()
     registration: RegisterPrefix = RegisterPrefix()
     distribution: DistributionPrefix=DistributionPrefix()
     redistribution: RedistributionPrefix=RedistributionPrefix()
+    pages: PagesPrefix = PagesPrefix()
 
 settings = Settings()
