@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Create Application - TheNest</title>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between">
+                <div class="flex space-x-7">
+                    <div>
+                        <a href="#" class="flex items-center py-4 px-2">
+                            <span class="font-semibold text-gray-500 text-lg">TheNest</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="min-h-screen flex items-center justify-center py-12">
+        <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Create Application</h2>
+            <form action="" method="POST">
+                <div class="mb-4">
+                    <label for="student_id" class="block text-gray-700 text-sm font-bold mb-2">Student ID</label>
+                    <input type="number" id="student_id" name="student_id" required
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mb-4">
+                    <label for="first_name" class="block text-gray-700 text-sm font-bold mb-2">First Name</label>
+                    <input type="text" id="first_name" name="first_name" required
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mb-4">
+                    <label for="surname" class="block text-gray-700 text-sm font-bold mb-2">Surname</label>
+                    <input type="text" id="surname" name="surname" required
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mb-4">
+                    <label for="middle_name" class="block text-gray-700 text-sm font-bold mb-2">Middle Name</label>
+                    <input type="text" id="middle_name" name="middle_name" required
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mb-4">
+                    <label for="admission_score" class="block text-gray-700 text-sm font-bold mb-2">Admission Score (0-100)</label>
+                    <input type="number" id="admission_score" name="admission_score" required min="0" max="100"
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mb-4">
+                    <label for="preferred_dormitory" class="block text-gray-700 text-sm font-bold mb-2">Preferred Dormitory</label>
+                  <input type="number" id="preferred_dormitory" name="preferred_dormitory" min="0"
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mb-4">
+                    <label for="preferred_floor" class="block text-gray-700 text-sm font-bold mb-2">Preferred Floor</label>
+                    <input type="number" id="preferred_floor" name="preferred_floor" min="0"
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mb-4">
+                    <label for="first_preferred_student" class="block text-gray-700 text-sm font-bold mb-2">First Preferred Student (Email)</label>
+                    <input type="email" id="first_preferred_student" name="first_preferred_student"
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mb-4">
+                    <label for="second_preferred_student" class="block text-gray-700 text-sm font-bold mb-2">Second Preferred Student (Email)</label>
+                    <input type="email" id="second_preferred_student" name="second_preferred_student"
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mb-6">
+                    <label for="third_preferred_student" class="block text-gray-700 text-sm font-bold mb-2">Third Preferred Student (Email)</label>
+                    <input type="email" id="third_preferred_student" name="third_preferred_student"
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="flex items-center justify-between">
+                    <button type="submit"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
+                        Submit Application
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        console.log('Script loaded!');
+        // Здесь можно добавить дополнительный JavaScript код для валидации формы на стороне клиента
+    </script>
+
+</body>
+</html>
