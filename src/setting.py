@@ -22,8 +22,8 @@ class RedistributionPrefix(BaseModel):
     tags: str = "redistribution"
 
 class PagesPrefix(BaseModel):
-    prefix: str = "/pages"
-    tags: str = "pages"
+    prefix: str = "/page"
+    tags: str = "page"
 
 
 class Settings(BaseSettings):
