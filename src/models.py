@@ -1,6 +1,7 @@
 from sqlalchemy import  Column, Integer, String, TIMESTAMP, ForeignKey, Boolean, func
 from sqlalchemy.orm import declarative_base, relationship
 
+
 Base = declarative_base()
 
 
@@ -18,6 +19,7 @@ class User(Base):
     assignments = relationship("Assignment", backref="user")
     applications = relationship("Application", backref="user")
     status_updates = relationship("Status", backref="user")
+
 
 class Dormitory(Base):
     __tablename__ = "dormitory"
@@ -54,7 +56,6 @@ class Bed(Base):
     assignments = relationship("Assignment", backref="bed")
 
 
-
 class Assignment(Base):
     __tablename__ = "assignment"
 
@@ -62,6 +63,7 @@ class Assignment(Base):
     student_id = Column(Integer, ForeignKey("users.id"))
     bed_id = Column(Integer, ForeignKey("bed.id"))
     application_status = Column(String, nullable=False)
+
 
 class Application(Base):
     __tablename__ = "application"
@@ -81,12 +83,14 @@ class Application(Base):
 
     status_updates = relationship("Status", backref="application")
 
+
 class Status(Base):
     __tablename__ = "status"
 
     application_id = Column(Integer, ForeignKey("application.id"), primary_key=True)
     student_id = Column(Integer, ForeignKey("users.id"))
     status = Column(String, nullable=False)
+
 
 class StudentListing(Base):
     __tablename__ = "student_listing"
