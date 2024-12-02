@@ -1,12 +1,12 @@
 from datetime import datetime
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from fastapi.params import Depends
-from sqlalchemy import update
+from sqlalchemy import update, select, Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.applications.database import get_async_session
-from src.applications.schemas import ApplicationCreate
+from src.applications.schemas import ApplicationCreate, StatusEnum
 from src.distribution.schemas import StudentStatus
-from src.models import Application, Status, Assignment, StudentListing
+from src.models import Application, Status, Assignment, StudentListing, User
 
 router = APIRouter()
 
@@ -34,7 +34,24 @@ async def create_application(new_application: ApplicationCreate,
 
 @router.get("/{student_id}", response_model=StudentStatus)
 async def get_information(student_id: int, session: AsyncSession = Depends(get_async_session)):
-    return await session.get(Status, student_id)
+    student_query = select(User).where(User.id == student_id)
+    result: Result = await session.execute(student_query)
+    student = result.scalar()
+
+    print(f"Student data: {vars(student)}")
+    status_query = select(Status).where(Status.student_id == student.id)
+    result: Result = await session.execute(status_query)
+    status = result.scalar_one_or_none()
+    if not status:
+        return StudentStatus(student_id=student.id,
+                             email=student.email,
+                             application_id=0,
+                             status=StatusEnum.NotSubmitted)
+    else:
+        return StudentStatus(student_id=student.id,
+                             email=student.email,
+                             application_id=status.application_id,
+                             status=status.status)
 
 @router.put("/get_confirmation/{student_id}", response_model=str)
 async def get_confirmation(student_id: int, session: AsyncSession = Depends(get_async_session)):
