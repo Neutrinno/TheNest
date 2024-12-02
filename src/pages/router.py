@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Request, Depends
 from fastapi.templating import Jinja2Templates
-from src. auth. manager import get_user_manager
+from starlette.responses import HTMLResponse
+
 router = APIRouter()
 
 templates = Jinja2Templates(directory='src/templates')
@@ -13,6 +14,6 @@ def get_base_html(request: Request):
 def get_search_html(request: Request):
     return templates.TemplateResponse(name='search.html', context={'request': request})
 
-"""@router.get('/register', register = Depends(get_user_manager))
-def get_register_html(request: Request):
-    return templates.TemplateResponse(name='register.html', context={'request': request})"""
+@router.get("/create_application", response_class=HTMLResponse)
+async def show_create_application_form(request: Request):
+    return templates.TemplateResponse("application.html", {"request": request})
