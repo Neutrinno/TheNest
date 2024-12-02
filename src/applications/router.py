@@ -2,6 +2,7 @@ from datetime import datetime
 from fastapi import APIRouter, HTTPException
 from fastapi.params import Depends
 from sqlalchemy import update, select, Result, delete
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.applications.database import get_async_session
 from src.applications.schemas import ApplicationCreate, StatusEnum
@@ -53,28 +54,35 @@ async def get_information(student_id: int, session: AsyncSession = Depends(get_a
                              application_id=status.application_id,
                              status=status.status)
 
-@router.delete("/delete_application/{student_id}", response_model=str)
+@router.delete("/delete_application/{student_id}")
 async def delete_application(student_id: int, session: AsyncSession = Depends(get_async_session)):
-
     try:
-        application_stmt = delete(Application).where(Application.student_id == student_id)
-        await session.execute(application_stmt)
-
         status_stmt = delete(Status).where(Status.student_id == student_id)
         await session.execute(status_stmt)
 
-        student_listing_stmt = delete(StudentListing).where(StudentListing.student_id == student_id)
-        await session.execute(student_listing_stmt)
+        application_stmt = delete(Application).where(Application.student_id == student_id)
+        await session.execute(application_stmt)
 
-        assignment_stmt = delete(Assignment).where(Assignment.student_id == student_id)
-        await session.execute(assignment_stmt)
+        student_listing_query = select(StudentListing).where(StudentListing.student_id == student_id)
+        student_listing = (await session.execute(student_listing_query)).scalar_one_or_none()
+
+        if student_listing:
+            student_listing_stmt = delete(StudentListing).where(StudentListing.student_id == student_id)
+            await session.execute(student_listing_stmt)
+
+        assignment_query = select(Assignment).where(Assignment.student_id == student_id)
+        assignment = (await session.execute(assignment_query)).scalar_one_or_none()
+
+        if assignment:
+            assignment_stmt = delete(Assignment).where(Assignment.student_id == student_id)
+            await session.execute(assignment_stmt)
 
         await session.commit()
-        return {"message": "Заявка успешно удалена"}
-    except Exception as e:
-        await session.rollback()
-        raise HTTPException(status_code=500, detail="Failed to delete transaction from database")
 
+        return {"message": "Заявка успешно удалена"}
+    except SQLAlchemyError as e:
+        await session.rollback()
+        raise HTTPException(status_code=500, detail=f"Ошибка при удалении заявки: {str(e)}")
 
 @router.put("/get_confirmation/{student_id}", response_model=str)
 async def get_confirmation(student_id: int, session: AsyncSession = Depends(get_async_session)):
