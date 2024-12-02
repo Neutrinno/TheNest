@@ -1,7 +1,7 @@
 from datetime import datetime
 from fastapi import APIRouter, HTTPException
 from fastapi.params import Depends
-from sqlalchemy import update, select, Result
+from sqlalchemy import update, select, Result, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.applications.database import get_async_session
 from src.applications.schemas import ApplicationCreate, StatusEnum
@@ -52,6 +52,29 @@ async def get_information(student_id: int, session: AsyncSession = Depends(get_a
                              email=student.email,
                              application_id=status.application_id,
                              status=status.status)
+
+@router.delete("/delete_application/{student_id}", response_model=str)
+async def delete_application(student_id: int, session: AsyncSession = Depends(get_async_session)):
+
+    try:
+        application_stmt = delete(Application).where(Application.student_id == student_id)
+        await session.execute(application_stmt)
+
+        status_stmt = delete(Status).where(Status.student_id == student_id)
+        await session.execute(status_stmt)
+
+        student_listing_stmt = delete(StudentListing).where(StudentListing.student_id == student_id)
+        await session.execute(student_listing_stmt)
+
+        assignment_stmt = delete(Assignment).where(Assignment.student_id == student_id)
+        await session.execute(assignment_stmt)
+
+        await session.commit()
+        return {"message": "Заявка успешно удалена"}
+    except Exception as e:
+        await session.rollback()
+        raise HTTPException(status_code=500, detail="Failed to delete transaction from database")
+
 
 @router.put("/get_confirmation/{student_id}", response_model=str)
 async def get_confirmation(student_id: int, session: AsyncSession = Depends(get_async_session)):
