@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Create Application - TheNest</title>
+    <title>Create Application</title>
 </head>
 <body class="bg-gray-100">
     <nav class="bg-white shadow-lg">
@@ -23,62 +23,86 @@
 
     <div class="min-h-screen flex items-center justify-center py-12">
         <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Create Application</h2>
-            <form action="" method="POST">
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Создание заявки</h2>
+            <form action="/application/create_application" method="POST">
                 <div class="mb-4">
-                    <label for="student_id" class="block text-gray-700 text-sm font-bold mb-2">Student ID</label>
+                    <label for="student_id" class="block text-gray-700 text-sm font-bold mb-2">ID Студента</label>
                     <input type="number" id="student_id" name="student_id" required
                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
                 <div class="mb-4">
-                    <label for="first_name" class="block text-gray-700 text-sm font-bold mb-2">First Name</label>
+                    <label for="first_name" class="block text-gray-700 text-sm font-bold mb-2">Имя</label>
                     <input type="text" id="first_name" name="first_name" required
                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
                 <div class="mb-4">
-                    <label for="surname" class="block text-gray-700 text-sm font-bold mb-2">Surname</label>
+                    <label for="surname" class="block text-gray-700 text-sm font-bold mb-2">Фамилия</label>
                     <input type="text" id="surname" name="surname" required
                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
                 <div class="mb-4">
-                    <label for="middle_name" class="block text-gray-700 text-sm font-bold mb-2">Middle Name</label>
+                    <label for="middle_name" class="block text-gray-700 text-sm font-bold mb-2">Отчество</label>
                     <input type="text" id="middle_name" name="middle_name" required
                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
                 <div class="mb-4">
-                    <label for="admission_score" class="block text-gray-700 text-sm font-bold mb-2">Admission Score (0-100)</label>
+                    <label for="admission_score" class="block text-gray-700 text-sm font-bold mb-2">Количество баллов (0-100)</label>
                     <input type="number" id="admission_score" name="admission_score" required min="0" max="100"
                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
                 <div class="mb-4">
-                    <label for="preferred_dormitory" class="block text-gray-700 text-sm font-bold mb-2">Preferred Dormitory</label>
+                    <label for="preferred_dormitory" class="block text-gray-700 text-sm font-bold mb-2">
+                        Номер желаемого общажития
+                        <span class="text-gray-500 font-normal">(необязательно)</span>
+                    </label>
                   <input type="number" id="preferred_dormitory" name="preferred_dormitory" min="0"
                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <p class="text-sm text-gray-500 mt-1">Размещение не гарантируется</p>
                 </div>
                 <div class="mb-4">
-                    <label for="preferred_floor" class="block text-gray-700 text-sm font-bold mb-2">Preferred Floor</label>
-                    <input type="number" id="preferred_floor" name="preferred_floor" min="0"
+                    <label for="preferred_floor" class="block text-gray-700 text-sm font-bold mb-2">
+                        Желаемый этаж
+                        <span class="text-gray-500 font-normal">(необязательно)</span>
+                    </label>
+                    <input type="number" id="preferred_floor" name="preferred_floor" min="1"
                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <p class="text-sm text-gray-500 mt-1">Размещение на указанном этаже не гарантируется</p>
                 </div>
                 <div class="mb-4">
-                    <label for="first_preferred_student" class="block text-gray-700 text-sm font-bold mb-2">First Preferred Student (Email)</label>
+                    <label for="first_preferred_student" class="block text-gray-700 text-sm font-bold mb-2">
+                        Выбор первого соседа
+                        <span class="text-gray-500 font-normal">(необязательно)</span>
+                    </label>
                     <input type="email" id="first_preferred_student" name="first_preferred_student"
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           placeholder="Введите email студента">
+                    <p class="text-sm text-gray-500 mt-1">Совместное размещение не гарантируется</p>
                 </div>
                 <div class="mb-4">
-                    <label for="second_preferred_student" class="block text-gray-700 text-sm font-bold mb-2">Second Preferred Student (Email)</label>
+                    <label for="second_preferred_student" class="block text-gray-700 text-sm font-bold mb-2">
+                        Выбор второго соседа
+                        <span class="text-gray-500 font-normal">(необязательно)</span>
+                    </label>
                     <input type="email" id="second_preferred_student" name="second_preferred_student"
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        placeholder="Введите email студента">
+                    <p class="text-sm text-gray-500 mt-1">Совместное размещение не гарантируется</p>
                 </div>
+
                 <div class="mb-6">
-                    <label for="third_preferred_student" class="block text-gray-700 text-sm font-bold mb-2">Third Preferred Student (Email)</label>
+                    <label for="third_preferred_student" class="block text-gray-700 text-sm font-bold mb-2">
+                        Выбор третьего соседа
+                        <span class="text-gray-500 font-normal">(необязательно)</span>
+                    </label>
                     <input type="email" id="third_preferred_student" name="third_preferred_student"
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            placeholder="Введите email студента">
+                    <p class="text-sm text-gray-500 mt-1">Совместное размещение не гарантируется</p>
                 </div>
                 <div class="flex items-center justify-between">
                     <button type="submit"
                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
-                        Submit Application
+                        Отправить заявку
                     </button>
                 </div>
             </form>
