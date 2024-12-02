@@ -342,7 +342,7 @@ async def get_distribution(session: AsyncSession = Depends(get_async_session)):
 
         students_to_add = []
         for index, (id_, score) in enumerate(student_list):
-            status = "Одобрено" if index < 80 else "Ожидание"
+            status = "Одобрено" if index < 80 else "Ожидает очереди"
 
             application_query = select(Application).where(Application.id == id_).limit(1)
             application_result = await session.execute(application_query)
