@@ -1,6 +1,7 @@
 from datetime import datetime
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Form
 from fastapi.params import Depends
+from requests import request
 from sqlalchemy import update, select, Result, delete
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -8,30 +9,62 @@ from src.applications.database import get_async_session
 from src.applications.schemas import ApplicationCreate, StatusEnum
 from src.distribution.schemas import StudentStatus
 from src.models import Application, Status, Assignment, StudentListing, User
+from fastapi.templating import Jinja2Templates
 
 router = APIRouter()
+templates = Jinja2Templates(directory='src/templates')
 
-@router.post("/")
-async def create_application(new_application: ApplicationCreate,
-                             session: AsyncSession = Depends(get_async_session)):
+@router.post("/create_application")
+async def create_application(
+    student_id: int = Form(...),
+    first_name: str = Form(...),
+    surname: str = Form(...),
+    middle_name: str = Form(...),
+    admission_score: int = Form(...),
+    preferred_dormitory: int = Form(None),
+    preferred_floor: int = Form(None),
+    first_preferred_student: str = Form(None),
+    second_preferred_student: str = Form(None),
+    third_preferred_student: str = Form(None),
+    session: AsyncSession = Depends(get_async_session)):
+
     now = datetime.now()
-    application = Application(**new_application.dict(),
-                              submission_date=now)
+
+    application = Application(
+        student_id=student_id,
+        first_name=first_name,
+        surname=surname,
+        middle_name=middle_name,
+        admission_score=admission_score,
+        preferred_dormitory=preferred_dormitory,
+        preferred_floor=preferred_floor,
+        first_preferred_student=first_preferred_student,
+        second_preferred_student=second_preferred_student,
+        third_preferred_student=third_preferred_student,
+        submission_date=now,
+    )
+
     session.add(application)
     await session.commit()
     await session.refresh(application)
 
     application_id = application.id
 
-    statement = Status(application_id=application_id,
-                       student_id=application.student_id,
-                       status="В обработке")
+    statement = Status(
+        application_id=application_id,
+        student_id=application.student_id,
+        status="В обработке",
+    )
 
     session.add(statement)
     await session.commit()
     await session.refresh(statement)
 
-    return {"message": f"Your application has been successfully registered. Number of application: {application_id}"}
+    return templates.TemplateResponse("success.html",
+        {"request": request,
+            "message": f"Ваша заявка успешно зарегистрирована. Номер заявки: {application_id}",
+        }
+    )
 
 @router.get("/{student_id}", response_model=StudentStatus)
 async def get_information(student_id: int, session: AsyncSession = Depends(get_async_session)):
