@@ -1,5 +1,5 @@
 import enum
-from typing import Optional, Annotated
+from typing import Optional, Annotated, Union
 from pydantic import BaseModel, EmailStr, Field
 
 class StudentId(BaseModel):
@@ -20,11 +20,13 @@ class ApplicationCreate(StudentId):
 
 
 class StatusEnum(str, enum.Enum):
+    NotSubmitted = "Не подано"
     Processing = "В обработке"
     Waiting = "Ожидает очереди"
     Rejected = "Отклонено"
-    Approved = "Одобрено"
+    Approved = "Одобренно"
 
-class Status(StudentId):
-    application_id: int
-    status: StatusEnum = Field(default=StatusEnum.Processing)
+class StudentStatus(StudentId):
+    email: str
+    application_id: Optional[int]
+    status: StatusEnum = Field(default=StatusEnum.NotSubmitted)
