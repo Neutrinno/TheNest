@@ -19,14 +19,9 @@ def mixin_redirect(res: Response, path: str ='/'):
     redirect.raw_headers.extend(res.raw_headers)
     return redirect
 
-
-@router.get('/base')
-def get_base_html(request: Request):
-    return templates.TemplateResponse(name='base.html', context={'request': request})
-
 @router.get("/")
 async def authorized(request: Request, user: User = Depends(auth_redirect)):
-    return templates.TemplateResponse(name="authorized.html", request=request)
+    return RedirectResponse(url=f"/page/{user.id}", status_code=303)
 
 @router.get("/auth")
 async def get_auth(request: Request, user: User = Depends(current_user)):
@@ -49,3 +44,15 @@ async def get_main_page(request: Request, student_id: int, user: User = Depends(
     if user.id != student_id:
         raise HTTPException(status_code=403, detail="Forbidden")
     return templates.TemplateResponse("main.html", {"request": request, "student_id": user.id})
+
+@router.get("/result_application/{student_id}", response_class=HTMLResponse)
+async def get_result_application(request: Request, student_id: int, user: User = Depends(auth_redirect)):
+    if user.id != student_id:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    return templates.TemplateResponse("result.html", {"request": request, "student_id": student_id})
+
+@router.get("/admin", response_class=HTMLResponse)
+async def get_admin(request: Request, student_id: int, user: User = Depends(auth_redirect)):
+    if user.id != student_id:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    return templates.TemplateResponse("admin.html", {"request": request, "student_id": student_id})
