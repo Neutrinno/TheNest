@@ -30,3 +30,18 @@ class StudentStatus(StudentId):
     email: str
     application_id: Optional[int]
     status: StatusEnum = Field(default=StatusEnum.NotSubmitted)
+
+class ResultApplication(StudentId):
+    status: str
+    dormitory_id: Optional[int] = None
+    address: Optional[str] = None
+    room_id: Optional[int] = None
+    first_name: Optional[str] = None
+    first_surname: Optional[str] = None
+    first_middle_name: Optional[str] = None
+    second_name: Optional[str] = None
+    second_surname: Optional[str] = None
+    second_middle_name: Optional[str] = None
+    third_name: Optional[str] = None
+    third_surname: Optional[str] = None
+    third_middle_name: Optional[str] = None
