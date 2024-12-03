@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>The Nest - Панель администратора</title>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <div>
+                    <a href="#" class="flex items-center py-4 px-2">
+                        <span class="font-semibold text-gray-700 text-lg">The Nest</span>
+                    </a>
+                </div>
+                <div>
+                    <form method="POST" action="/logout">
+                        <button type="submit"
+                                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            Выйти
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="bg-white p-10 rounded-lg shadow-md w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Панель администратора</h2>
+            <div class="space-y-4">
+                <div>
+                    <button type="button"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline w-full">
+                        Первичное распределение
+                    </button>
+                </div>
+                <div>
+                    <button type="button"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline w-full">
+                        Перераспределение
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
