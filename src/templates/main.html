@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>The Nest</title>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center">
+                <div class="flex space-x-7">
+                    <div>
+                        <a href="#" class="flex items-center py-4 px-2">
+                            <span class="font-semibold text-gray-500 text-lg">The Nest</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center items-center h-full">
+                    <form method="POST" action="/logout">
+                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            Выйти
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="bg-white p-10 rounded-lg shadow-md w-full max-w-lg">
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Профиль студента</h2>
+            <div class="mb-4">
+                <p class="text-gray-700"><span class="font-bold">ID студента:</span> <span id="student-id">...</span></p>
+                <p class="text-gray-700"><span class="font-bold">Email:</span> <span id="student-email">...</span></p>
+                <p class="text-gray-700"><span class="font-bold">ID заявки:</span> <span id="application-id">...</span></p>
+                <p class="text-gray-700"><span class="font-bold">Статус заявки:</span> <span id="application-status">...</span></p>
+            </div>
+            <div id="actions" class="flex flex-col space-y-4">
+                <!-- Dynamic buttons will be added here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Функция для получения данных студента
+        async function fetchStudentData(studentId) {
+            try {
+                // Запрос данных о студенте
+                const response = await fetch(`/application/${studentId}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
+                }
+
+                // Парсим JSON-ответ
+                const data = await response.json();
+
+                // Заполняем HTML-элементы
+                document.getElementById('student-id').textContent = data.student_id;
+                document.getElementById('student-email').textContent = data.email || 'Email отсутствует';
+                document.getElementById('application-id').textContent = data.application_id || 'Отсутствует';
+                document.getElementById('application-status').textContent = data.status;
+
+                // Очищаем контейнер кнопок
+                const actionsDiv = document.getElementById('actions');
+                actionsDiv.innerHTML = '';
+
+                // Динамическое создание кнопок
+                if (!data.application_id) {
+                    const createButton = document.createElement('button');
+                    createButton.textContent = 'Создать заявку';
+                    createButton.className = 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline';
+                    createButton.onclick = () => {
+                        window.location.href = `/page/create_application`;
+                    };
+                    actionsDiv.appendChild(createButton);
+                } else {
+                    const viewButton = document.createElement('button');
+                    viewButton.textContent = 'Просмотр заявки';
+                    viewButton.className = 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline';
+                    viewButton.onclick = () => {
+                        window.location.href = `/application/${data.application_id}`;
+                    };
+                    actionsDiv.appendChild(viewButton);
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Удалить заявку';
+                    deleteButton.className = 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline';
+                    deleteButton.onclick = () => deleteApplication(data.application_id);
+                    actionsDiv.appendChild(deleteButton);
+                }
+            } catch (error) {
+                console.error('Error fetching student data:', error);
+                alert('Не удалось загрузить данные студента. Попробуйте снова.');
+            }
+        }
+
+        // Функция для удаления заявки
+        async function deleteApplication(applicationId) {
+            try {
+                const response = await fetch(`application/delete_application/${studentID}`, { method: 'DELETE'});
+                if (response.ok) {
+                    alert('Заявка успешно удалена!');
+                    location.reload();
+                } else {
+                    alert('Ошибка удаления заявки.');
+                }
+            } catch (error) {
+                console.error('Error deleting application:', error);
+                alert('Не удалось удалить заявку. Попробуйте снова.');
+            }
+        }
+
+        // Получение student_id из контекста шаблона
+        const studentId = {{ student_id | safe }};
+        fetchStudentData(studentId);
+    </script>
+</body>
+</html>
