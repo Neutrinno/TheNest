@@ -1,12 +1,11 @@
 from typing import Union
-
 import uvicorn
 from fastapi.responses import RedirectResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi_users.authentication import Strategy, Authenticator
 from fastapi.responses import RedirectResponse
 from fastapi_users.schemas import BaseUserCreate
-
+from src.pages.router import router as router_pages, mixin_redirect
 from src.applications.router import router as application_router
 from src.distribution.router import router as distribution_router
 from src.redistribution.router import router as redistribution_router
@@ -76,24 +75,60 @@ app.include_router(
 #app.mount("/src/static", StaticFiles(directory="src/static"), name="static")
 
 
-async def auth_redirect(user: User = Depends(current_user)):
+@app.post("/auth")
+async def auth_post(
+    request: Request,
+    response: Response,
+    user_manager: BaseUserManager = Depends(get_user_manager),
+    strategy: Strategy = Depends(auth_backend.get_strategy),
+    email: str = Form(...),
+    password: str = Form(...),
+):
+    credentials = OAuth2PasswordRequestForm(username=email, password=password)
+    user = await user_manager.authenticate(credentials)  # Аутентификация пользователя
     if user is None:
-        raise HTTPException(status_code=302, detail="Not authorized", headers={"Location": "/auth"})
-    return user
+        # Если пользователь не найден, отобразить страницу с ошибкой
+        extra = {"exceptions": "there is no user with this username and password"}
+        return templates.TemplateResponse(name="auth.html", request=request, context=extra)
+    else:
+        # Авторизация успешна, выполнить логин
+        response = await auth_backend.login(strategy, user)
+        await user_manager.on_after_login(user, request, response)
+
+        # Добавляем редирект на страницу пользователя
+        return mixin_redirect(res=response, path=f"/{user.id}")
+
+@app.post("/register")
+async def register_post(
+    request: Request,
+    response: Response,
+    user_manager: BaseUserManager = Depends(get_user_manager),
+    email: str = Form(...),
+    password: str = Form(...)):
+    user = None
+    try:
+        user = await user_manager.create(
+            user_create=BaseUserCreate(email=email, password=password)
+        )
+        print(user)
+    except exceptions.UserAlreadyExists:
+        extra = {"exceptions": "UserAlreadyExists"}
+        return templates.TemplateResponse(
+            name="register.html", request=request, context=extra
+        )
+    return templates.TemplateResponse(
+        name="auth.html",
+        request=request,)
+
+@app.post("/logout")
+async def logout_post(user_token: Authenticator = Depends(get_current_user_token),
+                      strategy: Strategy = Depends(auth_backend.get_strategy)):
+    user, token = user_token
+    response = await auth_backend.logout(strategy, user, token)
+    return mixin_redirect(res=response, path= 'auth')
 
 
-@app.get("/")
-async def authorized(request: Request, user: User = Depends(auth_redirect)):
-    return templates.TemplateResponse(name="authorized.html", request=request)
-
-
-@app.get("/auth")
-async def get_auth(request: Request, user: User = Depends(current_user)):
-    if user is not None:
-        return RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
-    return templates.TemplateResponse(name="auth.html", request=request)
-
-
+app.include_router(router_pages)
 
 if __name__ == "__main__":
     uvicorn.run("src.main:app", reload=True)
