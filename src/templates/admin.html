@@ -32,13 +32,13 @@
             <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Панель администратора</h2>
             <div class="space-y-4">
                 <div>
-                    <button type="button"
+                    <button id="primary-distribution"
                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline w-full">
                         Первичное распределение
                     </button>
                 </div>
                 <div>
-                    <button type="button"
+                    <button id="redistribution"
                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded focus:outline-none focus:shadow-outline w-full">
                         Перераспределение
                     </button>
@@ -46,5 +46,39 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('primary-distribution').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/distribution/', {method:'GET'});
+                if (response.ok) {
+                    const data = await response.json();
+                    alert('Первичное распределение успешно завершено!');
+                    console.log(data);
+                } else {
+                    const errorData = await response.json();
+                    alert(`Ошибка первичного распределения: ${errorData.message}`);
+                }
+            } catch (error) {
+                console.error('Ошибка при первичном распределении:', error);
+                alert('Не удалось выполнить первичное распределение. Попробуйте позже.');
+            }
+        });
+
+        document.getElementById('redistribution').addEventListener('click', async () => {
+            try {
+                const response = await fetch('/redistribution/', {method:'GET'});
+                if (response.ok) {
+                    const message = await response.text();
+                    alert(message);
+                } else {
+                    alert('Ошибка перераспределения. Проверьте данные и попробуйте снова.');
+                }
+            } catch (error) {
+                console.error('Ошибка при перераспределении:', error);
+                alert('Не удалось выполнить перераспределение. Попробуйте позже.');
+            }
+        });
+    </script>
 </body>
 </html>
