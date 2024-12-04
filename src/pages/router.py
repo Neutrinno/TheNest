@@ -43,7 +43,7 @@ async def show_create_application_form(request: Request):
 async def get_main_page(request: Request, student_id: int, user: User = Depends(auth_redirect)):
     if user.id != student_id:
         raise HTTPException(status_code=403, detail="Forbidden")
-    return templates.TemplateResponse("main.html", {"request": request, "student_id": user.id})
+    return templates.TemplateResponse("main.html", {"request": request, "student_id": student_id})
 
 
 @router.get("/result_application/{student_id}", response_class=HTMLResponse)
