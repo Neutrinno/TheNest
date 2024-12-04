@@ -1,6 +1,7 @@
 import enum
 from typing import Optional, Annotated, Union
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, validator, field_validator
+
 
 class StudentId(BaseModel):
     student_id: int
@@ -17,7 +18,6 @@ class ApplicationCreate(StudentId):
     first_preferred_student: Optional[EmailStr] = None
     second_preferred_student: Optional[EmailStr] = None
     third_preferred_student: Optional[EmailStr] = None
-
 
 class StatusEnum(str, enum.Enum):
     NotSubmitted = "Не подано"
