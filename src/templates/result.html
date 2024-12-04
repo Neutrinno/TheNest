@@ -34,31 +34,96 @@
             <div class="mb-4">
                 <p class="text-gray-700"><span class="font-bold">ID студента:</span> <span id="student-id">...</span></p>
                 <p class="text-gray-700"><span class="font-bold">Статус:</span> <span id="status">...</span></p>
+                <p id="warning" class="text-red-600 font-semibold text-sm hidden mt-2">
+                    Внимание! Необходимо подтвердить заселение до 01.01.2025, иначе Ваша заявка будет отклонена.
+                </p>
             </div>
-            <div id="actions" class="flex flex-col space-y-4">
+            <div id="details" class="mb-4 hidden">
+                <p class="text-gray-700"><span class="font-bold">Общежитие:</span> <span id="dormitory-id">...</span></p>
+                <p class="text-gray-700"><span class="font-bold">Адрес:</span> <span id="address">...</span></p>
+                <p class="text-gray-700"><span class="font-bold">Комната:</span> <span id="room-id">...</span></p>
+                <p class="text-gray-700"><span class="font-bold">Соседи:</span></p>
+                <ul class="list-disc list-inside text-gray-700" id="roommates">
+                    <li id="roommate-1">...</li>
+                    <li id="roommate-2">...</li>
+                    <li id="roommate-3">...</li>
+                </ul>
+            </div>
+
+            <!-- Место для кнопок -->
+            <div id="actions" class="mt-4 flex justify-between">
+                <button id="back-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Назад
+                </button>
+                <div id="confirm-button-container"></div>
             </div>
         </div>
     </div>
+
     <script>
-      async function fetchApplicationData(studentId) {
-          try {
-              const response = await fetch (`/application/result_application/{student_id}`)
+        async function fetchApplicationData(studentId) {
+            try {
+                const response = await fetch(`/application/result_application/${studentId}`);
+                const data = await response.json();
+                console.log(data);
 
-              const data = await response.json();
+                document.getElementById('student-id').textContent = data.student_id;
+                document.getElementById('status').textContent = data.status;
 
-              document.getElementById('student-id').textContent = data.student_id
-              document.getElementById('status').textContent = data.status
+                const warningElement = document.getElementById('warning');
+                if (data.status === "Принято") {
+                    warningElement.classList.remove('hidden');
 
+                    const confirmButton = document.createElement('button');
+                    confirmButton.textContent = 'Подтвердить заселение';
+                    confirmButton.className = 'bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline';
+                    confirmButton.onclick = () => confirmSettlement(studentId);
+                    document.getElementById('confirm-button-container').appendChild(confirmButton);
+                } else {
+                    warningElement.classList.add('hidden');
+                }
 
+                if (!["В очереди", "Отклонено", "В обработке"].includes(data.status)) {
+                    document.getElementById('details').classList.remove('hidden');
+                    document.getElementById('dormitory-id').textContent = data.dormitory_id || "Не указано";
+                    document.getElementById('address').textContent = data.address || "Не указано";
+                    document.getElementById('room-id').textContent = data.room_id || "Не указано";
 
+                    const roommates = [
+                        `${data.first_surname || ""} ${data.first_name || ""} ${data.first_middle_name || ""}`.trim(),
+                        `${data.second_surname || ""} ${data.second_name || ""} ${data.second_middle_name || ""}`.trim(),
+                        `${data.third_surname || ""} ${data.third_name || ""} ${data.third_middle_name || ""}`.trim()
+                    ];
 
+                    document.getElementById('roommate-1').textContent = roommates[0] || "Нет данных";
+                    document.getElementById('roommate-2').textContent = roommates[1] || "Нет данных";
+                    document.getElementById('roommate-3').textContent = roommates[2] || "Нет данных";
+                }
+            } catch (error) {
+                console.error("Ошибка загрузки данных:", error);
+            }
+        }
 
+        async function confirmSettlement(studentId) {
+            try {
+                const response = await fetch(`/application/get_confirmation/${studentId}`, {method: 'PUT'});
+                if (response.ok) {
+                    alert('Заселение успешно подтверждено!');
+                    location.reload();
+                } else {
+                    alert('Ошибка подтверждения заселения.');
+                }
+            } catch (error) {
+                console.error('Error confirming settlement:', error);
+                alert('Не удалось подтвердить заселение. Попробуйте снова.');
+            }
+        }
 
-              }
-
-
-
-
-      }
-
+        const studentId = {{ student_id | safe }};
+        document.getElementById('back-button').onclick = () => {
+            window.location.href = `/page/${studentId}`;
+        };
+        fetchApplicationData(studentId);
     </script>
+</body>
+</html>
