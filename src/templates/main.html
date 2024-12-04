@@ -17,7 +17,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="flex flex-col justify-center items-center h-full">
+                <div class="flex items-center">
                     <form method="POST" action="/logout">
                         <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                             Выйти
@@ -27,13 +27,11 @@
             </div>
         </div>
     </nav>
-
     <div class="min-h-screen flex items-center justify-center">
         <div class="bg-white p-10 rounded-lg shadow-md w-full max-w-lg">
             <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Профиль студента</h2>
             <div class="mb-4">
                 <p class="text-gray-700"><span class="font-bold">ID студента:</span> <span id="student-id">...</span></p>
-                <p class="text-gray-700"><span class="font-bold">Email:</span> <span id="student-email">...</span></p>
                 <p class="text-gray-700"><span class="font-bold">ID заявки:</span> <span id="application-id">...</span></p>
                 <p class="text-gray-700"><span class="font-bold">Статус заявки:</span> <span id="application-status">...</span></p>
             </div>
@@ -46,13 +44,15 @@
         async function fetchStudentData(studentId) {
             try {
                 const response = await fetch(`/application/${studentId}`);
+                if (!response.ok) {
+                    throw new Error(`Ошибка запроса: ${response.status} ${response.statusText}`);
+                }
 
                 const data = await response.json();
 
                 document.getElementById('student-id').textContent = data.student_id;
-                document.getElementById('student-email').textContent = data.email || 'Email отсутствует';
                 document.getElementById('application-id').textContent = data.application_id || 'Отсутствует';
-                document.getElementById('application-status').textContent = data.status;
+                document.getElementById('application-status').textContent = data.status || 'Неизвестен';
 
                 const actionsDiv = document.getElementById('actions');
                 actionsDiv.innerHTML = '';
@@ -79,9 +79,9 @@
                     deleteButton.className = 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline';
                     deleteButton.onclick = () => deleteApplication(data.application_id);
                     actionsDiv.appendChild(deleteButton);
-
+                }
             } catch (error) {
-                console.error('Error fetching student data:', error);
+                console.error('Ошибка получения данных студента:', error);
                 alert('Не удалось загрузить данные студента. Попробуйте снова.');
             }
         }
@@ -96,7 +96,7 @@
                     alert('Ошибка удаления заявки.');
                 }
             } catch (error) {
-                console.error('Error deleting application:', error);
+                console.error('Ошибка удаления заявки:', error);
                 alert('Не удалось удалить заявку. Попробуйте снова.');
             }
         }
