@@ -334,7 +334,7 @@ async def other_distribution(session: AsyncSession):
 @router.get("/", response_model=list[StudentList])
 async def get_distribution(session: AsyncSession = Depends(get_async_session)):
     try:
-        query = select(Application.id, Application.admission_score).order_by(desc(Application.admission_score))
+        query = select(Application.student_id, Application.admission_score).order_by(desc(Application.admission_score))
         result = await session.execute(query)
         student_list = result.all()
 
@@ -342,7 +342,7 @@ async def get_distribution(session: AsyncSession = Depends(get_async_session)):
         for index, (id_, score) in enumerate(student_list):
             status = "Одобрено" if index < 80 else "Ожидает очереди"
 
-            application_query = select(Application).where(Application.id == id_).limit(1)
+            application_query = select(Application).where(Application.student_id == id_).limit(1)
             application_result = await session.execute(application_query)
             application = application_result.scalar_one_or_none()
 
@@ -361,8 +361,8 @@ async def get_distribution(session: AsyncSession = Depends(get_async_session)):
         await session.commit()
 
         await status_update(session)
-        await first_distribution(session)
         await assign_roommates(session)
+        await first_distribution(session)
         await other_distribution(session)
         await status_update(session)
 
