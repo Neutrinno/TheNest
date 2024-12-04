@@ -20,11 +20,10 @@
             </div>
         </div>
     </nav>
-
     <div class="min-h-screen flex items-center justify-center py-12">
         <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
             <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Создание заявки</h2>
-            <form action="/application/create_application" method="POST">
+            <form id="applicationForm" action="/application/create_application" method="POST">
                 <div class="mb-4">
                     <label for="student_id" class="block text-gray-700 text-sm font-bold mb-2">ID Студента</label>
                     <input type="number" id="student_id" name="student_id" required
@@ -52,11 +51,12 @@
                 </div>
                 <div class="mb-4">
                     <label for="preferred_dormitory" class="block text-gray-700 text-sm font-bold mb-2">
-                        Номер желаемого общажития
+                        Номер желаемого общежития
                         <span class="text-gray-500 font-normal">(необязательно)</span>
                     </label>
-                  <input type="number" id="preferred_dormitory" name="preferred_dormitory" min="0"
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <input type="number" id="preferred_dormitory" name="preferred_dormitory"
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           placeholder="Оставьте пустым, если нет предпочтений" value="">
                     <p class="text-sm text-gray-500 mt-1">Размещение не гарантируется</p>
                 </div>
                 <div class="mb-4">
@@ -64,8 +64,9 @@
                         Желаемый этаж
                         <span class="text-gray-500 font-normal">(необязательно)</span>
                     </label>
-                    <input type="number" id="preferred_floor" name="preferred_floor" min="1"
-                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <input type="number" id="preferred_floor" name="preferred_floor"
+                           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                           placeholder="Оставьте пустым, если нет предпочтений" value="">
                     <p class="text-sm text-gray-500 mt-1">Размещение на указанном этаже не гарантируется</p>
                 </div>
                 <div class="mb-4">
@@ -75,8 +76,7 @@
                     </label>
                     <input type="email" id="first_preferred_student" name="first_preferred_student"
                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                           placeholder="Введите email студента">
-                    <p class="text-sm text-gray-500 mt-1">Совместное размещение не гарантируется</p>
+                           placeholder="Введите email или оставьте пустым">
                 </div>
                 <div class="mb-4">
                     <label for="second_preferred_student" class="block text-gray-700 text-sm font-bold mb-2">
@@ -85,19 +85,16 @@
                     </label>
                     <input type="email" id="second_preferred_student" name="second_preferred_student"
                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        placeholder="Введите email студента">
-                    <p class="text-sm text-gray-500 mt-1">Совместное размещение не гарантируется</p>
+                           placeholder="Введите email или оставьте пустым">
                 </div>
-
-                <div class="mb-6">
+                <div class="mb-4">
                     <label for="third_preferred_student" class="block text-gray-700 text-sm font-bold mb-2">
                         Выбор третьего соседа
                         <span class="text-gray-500 font-normal">(необязательно)</span>
                     </label>
                     <input type="email" id="third_preferred_student" name="third_preferred_student"
                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            placeholder="Введите email студента">
-                    <p class="text-sm text-gray-500 mt-1">Совместное размещение не гарантируется</p>
+                           placeholder="Введите email или оставьте пустым">
                 </div>
                 <div class="flex items-center justify-between">
                     <button type="submit"
@@ -110,9 +107,18 @@
     </div>
 
     <script>
-        console.log('Script loaded!');
-        // Здесь можно добавить дополнительный JavaScript код для валидации формы на стороне клиента
-    </script>
+        document.getElementById('applicationForm').addEventListener('submit', function (e) {
+            const form = e.target;
+            const dormitoryField = form.querySelector('#preferred_dormitory');
+            const floorField = form.querySelector('#preferred_floor');
 
+            if (dormitoryField.value.trim() === '') {
+                dormitoryField.value = 0;
+            }
+            if (floorField.value.trim() === '') {
+                floorField.value = 0;
+            }
+        });
+    </script>
 </body>
 </html>
