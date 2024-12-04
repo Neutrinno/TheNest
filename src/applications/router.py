@@ -90,7 +90,7 @@ async def get_result_application(student_id: int, session: AsyncSession = Depend
         result = await session.execute(status_query)
         status = result.scalar_one_or_none()
 
-        if status.status in ["Ожидает очереди", "В ожидании", "Отклонено", "В обработке"]:
+        if status.status in ["В очереди", "Отклонено", "В обработке"]:
             return ResultApplication(student_id=student_id, status=status.status)
 
         assignment_query = select(Assignment).where(Assignment.student_id == student_id)
