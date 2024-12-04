@@ -228,14 +228,12 @@ async def assign_roommates(session: AsyncSession):
                         assigned_room = room_result.scalar_one_or_none()
 
                         if assigned_room:
-                            # Проверить, есть ли свободная кровать в этой комнате
                             free_bed_query = (select(Bed).where(
                                 and_(Bed.room_id == assigned_room.id, Bed.is_occupied == False)).limit(1))
                             free_bed_result: Result = await session.execute(free_bed_query)
                             free_bed = free_bed_result.scalar_one_or_none()
 
                             if free_bed:
-                                # Подселяем нового студента на свободную кровать
                                 await assign_bed_to_student(student.student_id, free_bed.id, session)
                                 student.status = "Принято"
 
