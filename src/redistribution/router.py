@@ -13,7 +13,7 @@ async def get_redistribution(session: AsyncSession = Depends(get_async_session))
     student_list = result.scalars().all()
 
     accepted = [student for student in student_list if student.status == "Принято"]
-    waiting = [student for student in student_list if student.status == "Ожидание"]
+    waiting = [student for student in student_list if student.status == "Ожидает очереди"]
 
     for student in accepted:
         student_listing_stmt = update(StudentListing).where(StudentListing.student_id == student.student_id).values(status="Отклонено")
