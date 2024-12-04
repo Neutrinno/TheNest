@@ -38,35 +38,25 @@
                 <p class="text-gray-700"><span class="font-bold">Статус заявки:</span> <span id="application-status">...</span></p>
             </div>
             <div id="actions" class="flex flex-col space-y-4">
-                <!-- Dynamic buttons will be added here -->
             </div>
         </div>
     </div>
 
     <script>
-        // Функция для получения данных студента
         async function fetchStudentData(studentId) {
             try {
-                // Запрос данных о студенте
                 const response = await fetch(`/application/${studentId}`);
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
-                }
 
-                // Парсим JSON-ответ
                 const data = await response.json();
 
-                // Заполняем HTML-элементы
                 document.getElementById('student-id').textContent = data.student_id;
                 document.getElementById('student-email').textContent = data.email || 'Email отсутствует';
                 document.getElementById('application-id').textContent = data.application_id || 'Отсутствует';
                 document.getElementById('application-status').textContent = data.status;
 
-                // Очищаем контейнер кнопок
                 const actionsDiv = document.getElementById('actions');
                 actionsDiv.innerHTML = '';
 
-                // Динамическое создание кнопок
                 if (!data.application_id) {
                     const createButton = document.createElement('button');
                     createButton.textContent = 'Создать заявку';
@@ -80,7 +70,7 @@
                     viewButton.textContent = 'Просмотр заявки';
                     viewButton.className = 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline';
                     viewButton.onclick = () => {
-                        window.location.href = `/application/${data.application_id}`;
+                        window.location.href = `/page/result_application/${data.student_id}`;
                     };
                     actionsDiv.appendChild(viewButton);
 
@@ -89,17 +79,16 @@
                     deleteButton.className = 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline';
                     deleteButton.onclick = () => deleteApplication(data.application_id);
                     actionsDiv.appendChild(deleteButton);
-                }
+
             } catch (error) {
                 console.error('Error fetching student data:', error);
                 alert('Не удалось загрузить данные студента. Попробуйте снова.');
             }
         }
 
-        // Функция для удаления заявки
         async function deleteApplication(applicationId) {
             try {
-                const response = await fetch(`application/delete_application/${studentID}`, { method: 'DELETE'});
+                const response = await fetch(`/application/delete_application/${applicationId}`, { method: 'DELETE' });
                 if (response.ok) {
                     alert('Заявка успешно удалена!');
                     location.reload();
@@ -112,7 +101,6 @@
             }
         }
 
-        // Получение student_id из контекста шаблона
         const studentId = {{ student_id | safe }};
         fetchStudentData(studentId);
     </script>
