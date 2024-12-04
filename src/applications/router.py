@@ -1,12 +1,13 @@
 from datetime import datetime
 from fastapi import APIRouter, HTTPException, Form
 from fastapi.params import Depends
-from requests import request
 from sqlalchemy import update, select, Result, delete
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi.responses import RedirectResponse
+
 from src.applications.database import get_async_session
-from src.applications.schemas import ApplicationCreate, StatusEnum, ResultApplication
+from src.applications.schemas import StatusEnum, ResultApplication
 from src.distribution.schemas import StudentStatus
 from src.models import Application, Status, Assignment, StudentListing, User, Bed, Room, Dormitory
 from fastapi.templating import Jinja2Templates
@@ -60,11 +61,7 @@ async def create_application(
     await session.commit()
     await session.refresh(statement)
 
-    return templates.TemplateResponse("success.html",
-        {"request": request,
-            "message": f"Ваша заявка успешно зарегистрирована. Номер заявки: {application_id}",
-        }
-    )
+    return RedirectResponse(url=f"/page/{student_id}", status_code=303)
 
 @router.get("/{student_id}", response_model=StudentStatus)
 async def get_information(student_id: int, session: AsyncSession = Depends(get_async_session)):
@@ -72,7 +69,6 @@ async def get_information(student_id: int, session: AsyncSession = Depends(get_a
     result: Result = await session.execute(student_query)
     student = result.scalar()
 
-    print(f"Student data: {vars(student)}")
     status_query = select(Status).where(Status.student_id == student.id)
     result: Result = await session.execute(status_query)
     status = result.scalar_one_or_none()
@@ -94,82 +90,61 @@ async def get_result_application(student_id: int, session: AsyncSession = Depend
         result = await session.execute(status_query)
         status = result.scalar_one_or_none()
 
-        if status.status in ["Ожидает очереди", "В ожидании", "Отклонено"]:
+        if status.status in ["Ожидает очереди", "В ожидании", "Отклонено", "В обработке"]:
             return ResultApplication(student_id=student_id, status=status.status)
 
         assignment_query = select(Assignment).where(Assignment.student_id == student_id)
         result = await session.execute(assignment_query)
         assignment = result.scalar_one_or_none()
 
-        if not assignment:
-            raise HTTPException(status_code=404, detail="Назначение не найдено.")
-
         bed_query = select(Bed).where(Bed.id == assignment.bed_id)
         result = await session.execute(bed_query)
         bed = result.scalar_one_or_none()
-
-        if not bed:
-            raise HTTPException(status_code=404, detail="Кровать не найдена.")
 
         room_query = select(Room).where(Room.id == bed.room_id)
         result = await session.execute(room_query)
         room = result.scalar_one_or_none()
 
-        if not room:
-            raise HTTPException(status_code=404, detail="Комната не найдена.")
-
         dormitory_query = select(Dormitory).where(Dormitory.id == room.dormitory_id)
         result = await session.execute(dormitory_query)
         dormitory = result.scalar_one_or_none()
 
-        if not dormitory:
-            raise HTTPException(status_code=404, detail="Общежитие не найдено.")
-
-        roommates_query = (
-            select(Assignment.student_id)
-            .join(Bed, Bed.id == Assignment.bed_id)
-            .join(Room, Room.id == Bed.room_id)
-            .where(Room.id == room.id, Assignment.student_id != student_id)
-        )
+        roommates_query = (select(Assignment.student_id)
+                           .join(Bed, Bed.id == Assignment.bed_id)
+                           .join(Room, Room.id == Bed.room_id)
+                           .where(Room.id == room.id, Assignment.student_id != student_id))
         result = await session.execute(roommates_query)
         roommates_ids = result.scalars().all()
 
-        roommates_data_query = (
-            select(Application.first_name, Application.surname, Application.middle_name)
-            .where(Application.student_id.in_(roommates_ids))
-        )
+        roommates_data_query = (select(Application.first_name, Application.surname, Application.middle_name)
+                                .where(Application.student_id.in_(roommates_ids)))
         result = await session.execute(roommates_data_query)
         roommates = result.all()
 
         roommates_info = [{"first_name": "", "surname": "", "middle_name": ""} for _ in range(3)]
         for i, roommate in enumerate(roommates[:3]):
-            roommates_info[i] = {
-                "first_name": roommate.first_name,
-                "surname": roommate.surname,
-                "middle_name": roommate.middle_name,
-            }
+            roommates_info[i] = {"first_name": roommate.first_name,
+                                 "surname": roommate.surname,
+                                 "middle_name": roommate.middle_name}
 
-        return ResultApplication(
-            student_id=student_id,
-            status=status.status,
-            dormitory_id=dormitory.id,
-            address=dormitory.address,
-            room_id=room.id,
-            first_name=roommates_info[0]["first_name"],
-            first_surname=roommates_info[0]["surname"],
-            first_middle_name=roommates_info[0]["middle_name"],
-            second_name=roommates_info[1]["first_name"],
-            second_surname=roommates_info[1]["surname"],
-            second_middle_name=roommates_info[1]["middle_name"],
-            third_name=roommates_info[2]["first_name"],
-            third_surname=roommates_info[2]["surname"],
-            third_middle_name=roommates_info[2]["middle_name"],
-        )
+        return ResultApplication(student_id=student_id,
+                                 status=status.status,
+                                 dormitory_id=dormitory.id,
+                                 address=dormitory.address,
+                                 room_id=room.id,
+                                 first_name=roommates_info[0]["first_name"],
+                                 first_surname=roommates_info[0]["surname"],
+                                 first_middle_name=roommates_info[0]["middle_name"],
+                                 second_name=roommates_info[1]["first_name"],
+                                 second_surname=roommates_info[1]["surname"],
+                                 second_middle_name=roommates_info[1]["middle_name"],
+                                 third_name=roommates_info[2]["first_name"],
+                                 third_surname=roommates_info[2]["surname"],
+                                 third_middle_name=roommates_info[2]["middle_name"])
 
     except SQLAlchemyError as e:
         await session.rollback()
         raise HTTPException(status_code=500, detail=f"Ошибка при обработке запроса: {str(e)}")
-
 
 @router.delete("/delete_application/{student_id}")
 async def delete_application(student_id: int, session: AsyncSession = Depends(get_async_session)):
@@ -197,6 +172,7 @@ async def delete_application(student_id: int, session: AsyncSession = Depends(ge
         await session.commit()
 
         return {"message": "Заявка успешно удалена"}
+
     except SQLAlchemyError as e:
         await session.rollback()
         raise HTTPException(status_code=500, detail=f"Ошибка при удалении заявки: {str(e)}")
