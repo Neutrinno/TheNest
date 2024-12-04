@@ -14,11 +14,6 @@ async def auth_redirect(user: User = Depends(current_user)):
         raise HTTPException(status_code=302, detail="Not authorized", headers={"Location": "/auth"})
     return user
 
-def mixin_redirect(res: Response, path: str ='/'):
-    redirect = RedirectResponse(path, status_code=status.HTTP_303_SEE_OTHER)
-    redirect.raw_headers.extend(res.raw_headers)
-    return redirect
-
 @router.get("/")
 async def authorized(request: Request, user: User = Depends(auth_redirect)):
     return RedirectResponse(url=f"/page/{user.id}", status_code=303)
@@ -51,8 +46,8 @@ async def get_result_application(request: Request, student_id: int, user: User =
         raise HTTPException(status_code=403, detail="Forbidden")
     return templates.TemplateResponse("result.html", {"request": request, "student_id": student_id})
 
-@router.get("/admin", response_class=HTMLResponse)
-async def get_admin(request: Request, student_id: int, user: User = Depends(auth_redirect)):
-    if user.id != student_id:
-        raise HTTPException(status_code=403, detail="Forbidden")
-    return templates.TemplateResponse("admin.html", {"request": request, "student_id": student_id})
+@router.get("/page/admin/", response_class=HTMLResponse)
+async def get_admin(request: Request, user: User = Depends(auth_redirect)):
+    if not user.is_superuser:
+        raise HTTPException(status_code=403, detail="Access forbidden for non-admin users")
+    return templates.TemplateResponse("admin.html", {"request": request, "user": user})
