@@ -6,6 +6,7 @@ from src.redistribution.database import get_async_session
 
 router = APIRouter()
 
+
 @router.get("/", response_model=str)
 async def get_redistribution(session: AsyncSession = Depends(get_async_session)):
     query = select(StudentListing).order_by(StudentListing.admission_score)
@@ -16,25 +17,39 @@ async def get_redistribution(session: AsyncSession = Depends(get_async_session))
     waiting = [student for student in student_list if student.status == "Ожидает очереди"]
 
     for student in accepted:
-        student_listing_stmt = update(StudentListing).where(StudentListing.student_id == student.student_id).values(status="Отклонено")
+
+        student_listing_stmt = (update(StudentListing)
+                                .where(StudentListing.student_id == student.student_id)
+                                .values(status="Отклонено"))
         await session.execute(student_listing_stmt)
 
-        status_stmt = update(Status).where(Status.student_id == student.student_id).values(status="Отклонено")
+        status_stmt = (update(Status)
+                       .where(Status.student_id == student.student_id)
+                       .values(status="Отклонено"))
         await session.execute(status_stmt)
 
         if waiting:
             new_student = waiting.pop(0)
-            assignment_stmt = update(Assignment).where(Assignment.student_id == student.student_id).values(student_id=new_student.student_id)
+
+            assignment_stmt = (update(Assignment)
+                               .where(Assignment.student_id == student.student_id)
+                               .values(student_id=new_student.student_id))
             await session.execute(assignment_stmt)
 
-            new_student_stmt = update(StudentListing).where(StudentListing.student_id == new_student.student_id).values(status="Принято")
+            new_student_stmt = (update(StudentListing)
+                                .where(StudentListing.student_id == new_student.student_id)
+                                .values(status="Принято"))
             await session.execute(new_student_stmt)
 
-            new_status_stmt = update(Status).where(Status.student_id == new_student.student_id).values(status="Принято")
+            new_status_stmt = (update(Status)
+                               .where(Status.student_id == new_student.student_id)
+                               .values(status="Принято"))
             await session.execute(new_status_stmt)
-        else:
             await session.commit()
-            return "Студенты закончились"
+
+
+            if not waiting:
+                break
 
     await session.commit()
     return "Перераспределение прошло успешно"
