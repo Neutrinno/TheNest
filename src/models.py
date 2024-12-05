@@ -17,7 +17,7 @@ class User(Base):
     is_verified = Column(Boolean, default=False, nullable=False)
 
     assignments = relationship("Assignment", backref="user")
-    applications = relationship("Application", backref="user")
+    applications = relationship("Application", backref="user", cascade="all, delete")
     status_updates = relationship("Status", backref="user")
 
 
@@ -81,13 +81,13 @@ class Application(Base):
     second_preferred_student = Column(String)
     third_preferred_student = Column(String)
 
-    status_updates = relationship("Status", backref="application")
+    status_updates = relationship("Status", backref="application", cascade="all, delete")
 
 
 class Status(Base):
     __tablename__ = "status"
 
-    application_id = Column(Integer, ForeignKey("application.id"), primary_key=True)
+    application_id = Column(Integer, ForeignKey("application.id", ondelete="CASCADE"), primary_key=True)
     student_id = Column(Integer, ForeignKey("users.id"))
     status = Column(String, nullable=False)
 
