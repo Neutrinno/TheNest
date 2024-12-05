@@ -65,6 +65,7 @@ async def create_application(
 
     return RedirectResponse(url=f"/page/{student_id}", status_code=303)
 
+
 @router.get("/{student_id}", response_model=StudentStatus)
 async def get_information(student_id: int, session: AsyncSession = Depends(get_async_session)):
     student_query = select(User).where(User.id == student_id)
@@ -161,6 +162,7 @@ async def delete_application(student_id: int, session: AsyncSession = Depends(ge
         student_listing = (await session.execute(student_listing_query)).scalar_one_or_none()
 
         if student_listing:
+
             student_listing_stmt = delete(StudentListing).where(StudentListing.student_id == student_id)
             await session.execute(student_listing_stmt)
 
@@ -168,6 +170,18 @@ async def delete_application(student_id: int, session: AsyncSession = Depends(ge
         assignment = (await session.execute(assignment_query)).scalar_one_or_none()
 
         if assignment:
+            bed_stmt = update(Bed).where(Bed.id == assignment.bed_id).values(is_occupied = False)
+            await session.execute(bed_stmt)
+
+            room_query = select(Room).join(Bed, Bed.room_id == Room.id).where(Bed.id == assignment.bed_id)
+            room = (await session.execute(room_query)).scalar_one_or_none()
+
+            room_stmt = update(Room).where(Room.id == room.id).values(is_occupied=False)
+            await session.execute(room_stmt)
+
+            dormitory_stmt = update(Dormitory).where(Dormitory.id == room.dormitory_id).values(is_occupied=False)
+            await session.execute(dormitory_stmt)
+
             assignment_stmt = delete(Assignment).where(Assignment.student_id == student_id)
             await session.execute(assignment_stmt)
 
