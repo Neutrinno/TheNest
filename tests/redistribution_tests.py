@@ -48,7 +48,7 @@ async def test_redistribution():
 
 
     async with AsyncClient(app=app, base_url="http://127.0.0.1:8000") as client:
-        response = await client.get("/redistibution")
+        response = await client.get("/")
         assert response.status_code == 200
         assert response.json() == "Перераспределение прошло успешно"
 
