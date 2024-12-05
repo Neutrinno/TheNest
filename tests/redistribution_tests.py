@@ -1,14 +1,12 @@
-from datetime import date
 import pytest
 from fastapi import FastAPI
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import select
-from src.models import Base, StudentListing, Assignment, Status, Application, Bed, Room, Dormitory
+from src.models import Base, StudentListing, Assignment, Status
 from src.redistribution.database import get_async_session
-from src.redistribution.router import router
-
+from src.redistribution.router import router as redistribution_router
 
 DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
@@ -22,7 +20,7 @@ async def get_async_session_test() -> AsyncSession:
 
 
 app = FastAPI()
-app.include_router(router)
+app.include_router(redistribution_router)
 
 app.dependency_overrides[get_async_session] = get_async_session_test
 
@@ -50,7 +48,7 @@ async def test_redistribution():
 
 
     async with AsyncClient(app=app, base_url="http://127.0.0.1:8000") as client:
-        response = await client.get("/")
+        response = await client.get("/redistibution")
         assert response.status_code == 200
         assert response.json() == "Перераспределение прошло успешно"
 
@@ -69,5 +67,3 @@ async def test_redistribution():
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
-
-
