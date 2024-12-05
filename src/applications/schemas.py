@@ -1,6 +1,6 @@
 import enum
-from typing import Optional, Annotated, Union
-from pydantic import BaseModel, EmailStr, Field, validator, field_validator
+from typing import Optional, Annotated
+from pydantic import BaseModel, EmailStr, Field
 
 
 class StudentId(BaseModel):
