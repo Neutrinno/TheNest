@@ -41,12 +41,11 @@ async def auth_post(request: Request,
 
 
 @router.post("/register")
-async def register_post(
-        request: Request,
-        response: Response,
-        user_manager: BaseUserManager = Depends(get_user_manager),
-        email: str = Form(...),
-        password: str = Form(...)):
+async def register_post(request: Request,
+                        response: Response,
+                        user_manager: BaseUserManager = Depends(get_user_manager),
+                        email: str = Form(...),
+                        password: str = Form(...)):
 
     user = None
 
@@ -63,9 +62,9 @@ async def register_post(
 
 
 @router.post("/logout")
-async def logout_post(
-    user_token: Authenticator = Depends(get_current_user_token),
-    strategy: Strategy = Depends(auth_backend.get_strategy)):
+async def logout_post(user_token: Authenticator = Depends(get_current_user_token),
+                      strategy: Strategy = Depends(auth_backend.get_strategy)):
+
     user, token = user_token
     logout_response = await auth_backend.logout(strategy, user, token)
 
