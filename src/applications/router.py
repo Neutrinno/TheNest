@@ -1,4 +1,6 @@
 from datetime import datetime
+from typing import Optional
+
 from fastapi import APIRouter, HTTPException, Form
 from fastapi.params import Depends
 from sqlalchemy import update, select, Result, delete
@@ -22,13 +24,13 @@ async def create_application(
     surname: str = Form(...),
     middle_name: str = Form(...),
     admission_score: int = Form(...),
-    preferred_dormitory: int = Form(None),
-    preferred_floor: int = Form(None),
-    first_preferred_student: str = Form(None),
-    second_preferred_student: str = Form(None),
-    third_preferred_student: str = Form(None),
-    session: AsyncSession = Depends(get_async_session)):
-
+    preferred_dormitory: Optional[int] = Form(None),
+    preferred_floor: Optional[int] = Form(None),
+    first_preferred_student: Optional[str] = Form(None),
+    second_preferred_student: Optional[str] = Form(None),
+    third_preferred_student: Optional[str] = Form(None),
+    session: AsyncSession = Depends(get_async_session),
+):
     now = datetime.now()
 
     application = Application(
