@@ -58,7 +58,7 @@ async def register_post(request: Request,
         extra = {"exceptions": "UserAlreadyExists"}
         return templates.TemplateResponse(name="register.html", request=request, context=extra)
 
-    return templates.TemplateResponse(name="auth.html", request=request,)
+    return templates.TemplateResponse(name="auth.html", request=request)
 
 
 @router.post("/logout")
