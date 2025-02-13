@@ -7,8 +7,19 @@ from fastapi import FastAPI
 from src.setting import settings
 from src.pages.router import router as pages_router
 from src.auth.router import router as auth_router
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title = 'TheNest')
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 app.include_router(
     application_router,
